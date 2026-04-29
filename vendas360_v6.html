@@ -1,0 +1,2594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Vendas 360">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Vendas 360">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Vendas 360</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#1a1a2e;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+body{display:flex;justify-content:center}
+.app{width:100%;max-width:430px;min-height:100vh;background:#f5f5f7;position:relative}
+.screen{overflow-y:auto;padding-bottom:80px;display:none;background:#f5f5f7;min-height:100vh}
+.screen.ativo{display:block}
+.hero{background:#1a1a2e;padding:52px 20px 22px;color:#fff}
+.topbar{background:#1a1a2e;padding:52px 20px 20px;color:#fff;position:relative}
+.topbar-title{font-size:22px;font-weight:600;color:#fff}
+.topbar-sub{font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px}
+.back-btn{font-size:14px;color:rgba(255,255,255,0.6);cursor:pointer;border:none;background:transparent;padding:0;margin-bottom:10px;display:block;font-family:inherit}
+.avatar{position:absolute;top:14px;right:16px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.15);border:0.5px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;font-weight:600;color:#fff}
+.section{padding:16px 16px 0}
+.slabel{font-size:10px;font-weight:600;color:#888;letter-spacing:.6px;margin-bottom:10px;display:block}
+.card{background:#fff;border-radius:16px;border:0.5px solid #e5e5e5;padding:15px;margin-bottom:10px}
+.card-blue{background:#f0f4ff;border-color:#c8d4f0}
+.card-green{background:#EAF3DE;border-color:#C0DD97}
+.card-red{background:#FCEBEB;border-color:#F7C1C1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.hcard{background:rgba(255,255,255,0.1);border-radius:12px;padding:12px;border:0.5px solid rgba(255,255,255,0.15)}
+.hcard p:first-child{font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:4px}
+.hcard p:last-child{font-size:18px;font-weight:600;color:#fff}
+.score{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0}
+.score-sm{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.sc-r{background:#FCEBEB;color:#A32D2D}
+.sc-a{background:#FAEEDA;color:#854F0B}
+.sc-g{background:#EAF3DE;color:#3B6D11}
+.chip{display:inline-block;font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;margin-top:5px}
+.chip-r{background:#FCEBEB;color:#A32D2D}
+.chip-a{background:#FAEEDA;color:#854F0B}
+.chip-g{background:#EAF3DE;color:#3B6D11}
+.chip-b{background:#E6F1FB;color:#185FA5}
+.btn{width:100%;padding:14px;border-radius:14px;border:none;font-size:14px;font-weight:600;cursor:pointer;color:#fff;margin-top:10px;font-family:inherit}
+.btn-dark{background:#1a1a2e}
+.btn-r{background:#A32D2D}
+.btn-a{background:#854F0B}
+.btn-g{background:#27500A}
+.btn-sec{background:#f0f0f0;color:#333;border:0.5px solid #e0e0e0}
+.flabel{font-size:10px;font-weight:600;color:#888;letter-spacing:.6px;margin-bottom:8px;margin-top:12px;display:block}
+input,textarea,select{width:100%;padding:13px;border-radius:12px;border:0.5px solid #e0e0e0;background:#fff;color:#111;font-size:14px;font-family:inherit;outline:none;-webkit-appearance:none;appearance:none}
+input:focus,textarea:focus{border-color:#1a1a2e}
+textarea{resize:none}
+.tog2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.tog{padding:13px;border-radius:12px;border:0.5px solid #e5e5e5;background:#f5f5f7;color:#666;font-size:13px;cursor:pointer;text-align:center;font-family:inherit}
+.tog.sel{border-color:#1a1a2e;background:#eef0f7;color:#1a1a2e;font-weight:600}
+.bar{height:6px;background:rgba(255,255,255,0.15);border-radius:3px;margin-top:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .5s}
+.prog-track{height:5px;background:#e5e5e5;border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;border-radius:3px;background:#1D9E75;transition:width .5s}
+.rota-stop{background:#fff;border-radius:16px;border:0.5px solid #e5e5e5;padding:14px 16px;margin-bottom:4px;display:flex;gap:14px;align-items:flex-start}
+.rota-stop.feito{border-color:#C0DD97;background:#f8fff5}
+.connector{width:2px;height:16px;background:#e0e0e0;margin-left:31px;margin-bottom:4px}
+.rnum{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;margin-top:2px}
+.rnum-p{background:#1a1a2e;color:#fff}
+.rnum-ok{background:#27500A;color:#fff}
+.clirow{background:#fff;border-radius:14px;border:0.5px solid #e5e5e5;padding:13px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:center;cursor:pointer}
+.alrow{background:#fff;border-radius:14px;border:0.5px solid #e5e5e5;padding:13px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start}
+.fb-box{border-radius:14px;padding:14px;margin-bottom:10px}
+.fb-green{background:#EAF3DE;border:0.5px solid #C0DD97}
+.fb-amber{background:#FAEEDA;border:0.5px solid #FAC775}
+.fb-blue{background:#E6F1FB;border:0.5px solid #B5D4F4}
+.mbox{background:#fff;border-radius:14px;border:0.5px solid #e5e5e5;padding:12px}
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:0.5px solid #e5e5e5;display:flex;padding:8px 0 24px;z-index:100}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;font-size:9px;color:#bbb;border:none;background:transparent;font-family:inherit}
+.tab.on{color:#1a1a2e}
+.tab svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto}
+.mhandle{width:36px;height:4px;background:#e0e0e0;border-radius:2px;margin:0 auto 20px}
+.import-area{border:2px dashed #e0e0e0;border-radius:16px;padding:28px 20px;text-align:center;cursor:pointer;margin-bottom:14px}
+.import-area input{display:none}
+.pf-avatar{width:72px;height:72px;border-radius:50%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:600;color:#fff;margin:0 auto 12px}
+table{width:100%;border-collapse:collapse}
+td{padding:8px 0;border-bottom:0.5px solid #f5f5f5;font-size:13px}
+td:first-child{color:#888}
+td:last-child{text-align:right;color:#111;font-weight:500}
+tr:last-child td{border-bottom:none}
+.gps-ok{background:#EAF3DE;border:0.5px solid #C0DD97;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.mapa-frame{width:100%;height:260px;border-radius:16px;border:0.5px solid #e5e5e5;overflow:hidden;margin-bottom:14px;background:#dde8dd;position:relative}
+.mapa-frame iframe{width:100%;height:100%;border:none}
+.mapa-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+#toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:300;display:none;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY - fora do app, cobre tudo -->
+<div id="login-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:#1a1a2e;z-index:9999;display:flex;flex-direction:column;justify-content:center;padding:40px 24px;overflow-y:auto">
+  <div style="text-align:center;margin-bottom:40px">
+    <div style="width:64px;height:64px;background:rgba(255,255,255,0.1);border-radius:18px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    </div>
+    <p style="font-size:24px;font-weight:500;color:#fff;margin:0 0 6px">Vendas 360</p>
+    <p style="font-size:13px;color:rgba(255,255,255,0.5);margin:0">Rota inteligente para representantes</p>
+  </div>
+  <div style="background:rgba(255,255,255,0.06);border-radius:16px;padding:24px;border:0.5px solid rgba(255,255,255,0.1)">
+    <div id="login-msg" style="display:none;padding:10px 12px;border-radius:10px;margin-bottom:14px;font-size:12px;font-weight:500"></div>
+    <div id="login-form">
+      <p style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.5);letter-spacing:.5px;margin:0 0 6px">EMAIL</p>
+      <input id="login-email" type="email" placeholder="seu@email.com" style="margin-bottom:12px;background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:#fff">
+      <p style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.5);letter-spacing:.5px;margin:0 0 6px">SENHA</p>
+      <input id="login-senha" type="password" placeholder="••••••••" style="margin-bottom:20px;background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:#fff">
+      <button onclick="fazerLogin()" style="width:100%;padding:14px;border-radius:12px;border:none;background:#fff;color:#1a1a2e;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit">Entrar</button>
+      <button onclick="mostrarCadastro()" style="width:100%;padding:12px;border-radius:12px;border:none;background:transparent;color:rgba(255,255,255,0.6);font-size:13px;cursor:pointer;font-family:inherit;margin-top:8px">Nao tenho conta — Cadastrar</button>
+    </div>
+    <div id="cadastro-form" style="display:none">
+      <p style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.5);letter-spacing:.5px;margin:0 0 6px">NOME</p>
+      <input id="cad-nome" type="text" placeholder="Seu nome completo" style="margin-bottom:12px;background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:#fff">
+      <p style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.5);letter-spacing:.5px;margin:0 0 6px">EMAIL</p>
+      <input id="cad-email" type="email" placeholder="seu@email.com" style="margin-bottom:12px;background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:#fff">
+      <p style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.5);letter-spacing:.5px;margin:0 0 6px">SENHA</p>
+      <input id="cad-senha" type="password" placeholder="Minimo 6 caracteres" style="margin-bottom:20px;background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:#fff">
+      <button onclick="fazerCadastro()" style="width:100%;padding:14px;border-radius:12px;border:none;background:#fff;color:#1a1a2e;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit">Criar conta</button>
+      <button onclick="mostrarLogin()" style="width:100%;padding:12px;border-radius:12px;border:none;background:transparent;color:rgba(255,255,255,0.6);font-size:13px;cursor:pointer;font-family:inherit;margin-top:8px">Ja tenho conta — Entrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+
+<!-- HOME -->
+<div id="pg-home" class="screen ativo">
+  <div class="hero" style="position:relative">
+    <div class="avatar" id="av1" onclick='ir("perfil")'>JS</div>
+    <p style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:2px" id="h-data">Bom dia</p>
+    <p style="font-size:22px;font-weight:600;color:#fff;margin-bottom:14px" id="h-greeting">Seu dia hoje</p>
+    <div class="grid2" style="margin-bottom:10px">
+      <div class="hcard"><p>Vendido hoje</p><p id="h-vhoje">R$ 0</p></div>
+      <div class="hcard"><p>Visitas pendentes</p><p id="h-pend">0</p></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:12px;border:0.5px solid rgba(255,255,255,0.1)">
+        <p style="font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:4px">Meta do dia</p>
+        <p style="font-size:15px;font-weight:600;color:#fff;margin-bottom:3px" id="h-meta-val">R$ 0</p>
+        <p style="font-size:10px;color:rgba(255,255,255,0.45)" id="h-falta">Falta R$ 0</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:12px;border:0.5px solid rgba(255,255,255,0.1)">
+        <p style="font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:4px">Meta mensal</p>
+        <p style="font-size:15px;font-weight:600;color:#fff;margin-bottom:3px" id="hm-val">R$ 0</p>
+        <p style="font-size:10px;color:rgba(255,255,255,0.45)" id="hm-falta">Falta R$ 0</p>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <span class="slabel" style="margin-top:4px">CLIENTES PRIORITARIOS HOJE</span>
+    <div id="home-lista"></div>
+    <button class="btn btn-dark" onclick='ir("rota")' style="margin-top:4px;margin-bottom:16px">Ver rota do dia completa</button>
+  </div>
+</div>
+
+<!-- ROTA -->
+<div id="pg-rota" class="screen">
+  <div class="topbar">
+    <p class="topbar-title" id="r-titulo">Rota do dia</p>
+    <p class="topbar-sub" id="r-sub">Carregando...</p>
+  </div>
+  <div class="section" style="margin-top:4px">
+    <div class="grid3" style="margin-bottom:10px">
+      <div style="background:#1a1a2e;border-radius:12px;padding:10px"><p style="font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:3px">Paradas</p><p style="font-size:16px;font-weight:600;color:#fff" id="r-count">0</p></div>
+      <div style="background:#1a1a2e;border-radius:12px;padding:10px"><p style="font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:3px">Feitos</p><p style="font-size:16px;font-weight:600;color:#fff" id="r-vis">0</p></div>
+      <div style="background:#1a1a2e;border-radius:12px;padding:10px"><p style="font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:3px">Potencial</p><p style="font-size:14px;font-weight:600;color:#fff" id="r-pot">R$ 0</p></div>
+    </div>
+    <div style="background:#f0f4ff;border-radius:12px;padding:10px 14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;border:0.5px solid #c8d4f0">
+      <div><p style="font-size:11px;font-weight:600;color:#1a1a2e;margin-bottom:2px">Minha localizacao</p><p style="font-size:11px;color:#888" id="loc-txt">Toque em GPS para otimizar pela distancia</p></div>
+      <button id="btn-minha-loc" onclick="obterGPS()" style="padding:8px 14px;border-radius:10px;border:none;background:#1a1a2e;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0">GPS</button>
+      <button onclick="abrirNavegacao()" style="padding:8px 14px;border-radius:10px;border:none;background:#1A73E8;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;flex-shrink:0"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>Navegar</button>
+    </div>
+    <div class="prog-track" style="margin-bottom:14px"><div class="prog-fill" id="r-prog" style="width:0%"></div></div>
+    <div class="mapa-frame" id="mapa-container">
+      <div class="mapa-ph" id="mapa-ph">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <p style="font-size:12px;color:#666">Cadastre clientes com GPS para ver o mapa</p>
+        <button onclick="abrirMapaExterno()" style="font-size:11px;padding:6px 14px;border-radius:20px;border:0.5px solid #1a1a2e;background:transparent;color:#1a1a2e;cursor:pointer;font-family:inherit">Abrir no Google Maps</button>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span class="slabel" style="margin-bottom:0" id="r-lista-label">SEQUENCIA DE VISITAS</span>
+      <span style="font-size:11px;color:#1D9E75;font-weight:600" id="r-status">0 visitados</span>
+    </div>
+    <div id="rota-lista"></div>
+    </div>
+</div>
+
+<!-- ALERTAS -->
+<div id="pg-alertas" class="screen">
+  <div class="topbar"><p class="topbar-title">Alertas</p><p class="topbar-sub" id="al-sub">Verificando...</p></div>
+  <div class="section" style="margin-top:4px" id="al-lista"></div>
+</div>
+
+<!-- CLIENTES -->
+<div id="pg-clientes" class="screen">
+  <div class="topbar" style="position:relative">
+    <div class="avatar" id="av2" onclick='ir("perfil")'>JS</div>
+    <p class="topbar-title">Clientes</p>
+    <p class="topbar-sub" id="cl-count">0 clientes na carteira</p>
+  </div>
+  <div class="section">
+    <div style="position:relative;margin:12px 0 16px">
+      <input type="search" placeholder="Buscar por nome ou cidade..." id="busca" oninput="buscarCliente()" style="padding-left:40px">
+      <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.4" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    </div>
+    <div id="busca-resultado" style="display:none">
+      <span class="slabel" id="busca-label">RESULTADOS</span>
+      <div id="lista-busca"></div>
+    </div>
+    <div id="busca-vazio" style="display:none;text-align:center;padding:32px 0">
+      <p style="font-size:14px;color:#888">Nenhum cliente encontrado</p>
+    </div>
+    <div id="acoes-clientes">
+      <div class="card" style="margin-bottom:10px">
+        <p style="font-size:11px;font-weight:500;color:#1a1a2e;margin-bottom:4px;letter-spacing:.3px">SUA CARTEIRA</p>
+        <p style="font-size:13px;color:#666;line-height:1.6">Digite acima para buscar um cliente, ver seu perfil ou registrar uma visita.</p>
+      </div>
+      <button class="btn btn-dark" onclick="abrirModalNC()">+ Cadastrar novo cliente</button>
+      <button class="btn btn-sec" style="margin-top:8px" onclick="abrirModalImp()">Importar planilha Excel</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ANALISE -->
+<div id="pg-analise" class="screen">
+  <div class="topbar"><p class="topbar-title">Analise do dia</p><p class="topbar-sub" id="a-data">Hoje</p></div>
+  <div class="section" style="margin-top:4px">
+    <div class="fb-box fb-green" id="a-box">
+      <p style="font-size:10px;font-weight:600;letter-spacing:.5px;margin-bottom:6px;color:#3B6D11" id="a-titulo">AGUARDANDO VISITAS</p>
+      <p style="font-size:13px;line-height:1.65;color:#27500A" id="a-msg">Registre visitas para ver sua analise.</p>
+    </div>
+    <div class="grid2" style="margin-bottom:10px">
+      <div class="mbox"><p style="font-size:10px;color:#888;margin-bottom:4px">Vendido hoje</p><p style="font-size:20px;font-weight:600;color:#111" id="a-val">R$ 0</p></div>
+      <div class="mbox"><p style="font-size:10px;color:#888;margin-bottom:4px">Conversao</p><p style="font-size:20px;font-weight:600;color:#111" id="a-conv">-</p></div>
+      <div class="mbox"><p style="font-size:10px;color:#888;margin-bottom:4px">Visitados</p><p style="font-size:20px;font-weight:600;color:#111" id="a-vis">0</p></div>
+      <div class="mbox"><p style="font-size:10px;color:#888;margin-bottom:4px">Pedidos</p><p style="font-size:20px;font-weight:600;color:#111" id="a-ped">0</p></div>
+    </div>
+    <div class="card card-blue">
+      <p style="font-size:10px;font-weight:600;color:#1a1a2e;letter-spacing:.5px;margin-bottom:6px">META DO DIA</p>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+        <p style="font-size:18px;font-weight:600;color:#111" id="a-mval">R$ 0</p>
+        <span style="font-size:12px;font-weight:600;color:#1a1a2e" id="a-mpct">0%</span>
+      </div>
+      <div style="height:6px;background:#dde4f5;border-radius:3px;overflow:hidden"><div id="a-mbar" style="height:100%;border-radius:3px;background:#1a1a2e;width:0%;transition:width .5s"></div></div>
+    </div>
+    <div class="card" id="a-amanha" style="display:none">
+      <p style="font-size:10px;font-weight:600;color:#1a1a2e;letter-spacing:.5px;margin-bottom:6px">RECOMENDACAO PARA AMANHA</p>
+      <p style="font-size:13px;color:#333;line-height:1.65" id="a-amtxt">-</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- PERFIL CLIENTE -->
+<div id="pg-cliente" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick='ir("clientes")'>Voltar</button>
+    <div style="display:flex;gap:14px;align-items:center">
+      <div class="score" id="cp-sc" style="width:50px;height:50px;font-size:16px">0</div>
+      <div><p class="topbar-title" id="cp-nome">-</p><p class="topbar-sub" id="cp-cidade">-</p></div>
+    </div>
+  </div>
+  <div class="section" style="margin-top:4px">
+    <div class="card"><span class="slabel">DADOS</span>
+      <table>
+        <tr><td>Telefone</td><td id="cp-tel">-</td></tr>
+        <tr><td>Ultima compra</td><td id="cp-ult">-</td></tr>
+        <tr><td>Valor medio</td><td id="cp-val">-</td></tr>
+        <tr><td>Ciclo medio</td><td id="cp-ciclo">-</td></tr>
+        <tr><td>Proximo ciclo</td><td id="cp-prox">-</td></tr>
+        <tr><td>Status rota</td><td id="cp-rota-st">-</td></tr>
+        <tr><td>Cliente chave</td><td id="cp-chave">-</td></tr>
+      </table>
+    </div>
+    <div class="card"><span class="slabel">OBSERVACOES</span><p style="font-size:13px;color:#666" id="cp-obs">-</p></div>
+    <div class="card"><span class="slabel">HISTORICO</span><p style="font-size:13px;color:#888" id="cp-hist">Nenhuma visita ainda.</p></div>
+    <button class="btn btn-dark" id="cp-btn-v">Registrar visita agora</button>
+    <button class="btn btn-sec" onclick="abrirEdicaoCliente()" style="display:flex;align-items:center;justify-content:center;gap:6px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Editar cadastro
+    </button>
+    <button class="btn btn-sec" onclick='ir("clientes")'>Voltar para lista</button>
+  </div>
+</div>
+
+<!-- VISITA -->
+<div id="pg-visita" class="screen">
+  <div class="topbar">
+    <button class="back-btn" id="v-back">Voltar</button>
+    <p style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:2px">Registrando visita</p>
+    <p class="topbar-title" id="v-nome">-</p>
+    <p class="topbar-sub" id="v-info">-</p>
+  </div>
+  <div class="section" style="margin-top:4px">
+    <span class="flabel">REALIZOU A VISITA?</span>
+    <div class="tog2"><button class="tog sel" id="vis-s" onclick="selVis(true)">Sim, visitei</button><button class="tog" id="vis-n" onclick="selVis(false)">Nao visitei</button></div>
+    <span class="flabel">FECHOU PEDIDO?</span>
+    <div class="tog2"><button class="tog sel" id="vnd-s" onclick="selVnd(true)">Vendeu</button><button class="tog" id="vnd-n" onclick="selVnd(false)">Nao vendeu</button></div>
+    <span class="flabel">VALOR DO PEDIDO (R$)</span>
+    <input id="v-valor" type="number" inputmode="numeric" placeholder="0,00" style="font-size:22px;font-weight:600;margin-bottom:4px">
+    <span class="flabel">CICLO DE COMPRA (DIAS)</span>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px">
+      <input id="v-ciclo" type="number" inputmode="numeric" style="flex:1;margin-bottom:0">
+      <div style="background:#f0f4ff;border-radius:10px;padding:10px 12px;font-size:11px;color:#185FA5;flex-shrink:0;text-align:center">Atual<br><span id="v-ciclo-atual" style="font-weight:600">30d</span></div>
+    </div>
+    <span class="flabel">MOTIVO (se nao vendeu)</span>
+    <input id="v-motivo" type="text" placeholder="Ex: cliente viajando..." style="margin-bottom:4px">
+    <span class="flabel">OBSERVACOES</span>
+    <textarea id="v-obs" rows="2" placeholder="Anote algo sobre esta visita..." style="margin-bottom:14px"></textarea>
+    <button class="btn btn-dark" onclick="salvarVisita()">Salvar e continuar</button>
+    <button class="btn btn-sec" id="v-cancel">Cancelar</button>
+  </div>
+</div>
+
+<!-- PERFIL VENDEDOR -->
+<div id="pg-perfil" class="screen">
+  <div class="topbar" style="text-align:center;padding-bottom:30px">
+    <button class="back-btn" onclick='ir("home")' style="text-align:left">Voltar</button>
+    <div class="pf-avatar" id="pf-av">JS</div>
+    <p class="topbar-title" style="text-align:center" id="pf-nome">-</p>
+    <p class="topbar-sub" style="text-align:center" id="pf-cargo">Representante Comercial</p>
+  </div>
+  <div class="section" style="margin-top:4px">
+    <div class="card"><span class="slabel">RESUMO</span>
+      <table>
+        <tr><td>Meta diaria</td><td id="pf-md">-</td></tr>
+        <tr><td>Meta mensal</td><td id="pf-mm">-</td></tr>
+        <tr><td>Total clientes</td><td id="pf-nc">0</td></tr>
+        <tr><td>Na rota hoje</td><td id="pf-nr">0</td></tr>
+      </table>
+    </div>
+    <div class="card"><span class="slabel">EDITAR DADOS</span>
+      <span class="flabel">NOME</span><input type="text" id="ed-nome" style="margin-bottom:4px">
+      <span class="flabel">EMPRESA</span><input type="text" id="ed-emp" style="margin-bottom:4px">
+      <span class="flabel">TELEFONE</span><input type="tel" id="ed-tel" style="margin-bottom:4px">
+      <span class="flabel">META DIARIA (R$)</span><input type="number" id="ed-md" style="margin-bottom:4px">
+      <span class="flabel">META MENSAL (R$)</span><input type="number" id="ed-mm" style="margin-bottom:4px">
+      <span class="flabel">VENDIDO NO MES (R$)</span><input type="number" id="ed-vmes" style="margin-bottom:4px">
+      <span class="flabel">MAX CLIENTES NA ROTA DO DIA</span><input type="number" id="ed-maxrota" placeholder="15" style="margin-bottom:4px">
+      <span class="flabel">TIPO DE ROTA</span>
+      <div class="tog2" style="margin-bottom:8px">
+        <button class="tog sel" id="tr-diaria" onclick="selTipoRota('diaria')">Diaria</button>
+        <button class="tog" id="tr-semanal" onclick="selTipoRota('semanal')">Semanal</button>
+      </div>
+      <div id="info-rota-diaria" style="background:#EAF3DE;border-radius:10px;padding:10px;margin-bottom:14px;font-size:12px;color:#27500A;line-height:1.6"><strong style="font-weight:600">Rota diaria:</strong> clientes mais urgentes do dia. Ideal para quem atua na mesma regiao.</div>
+      <div id="info-rota-semanal" style="display:none;background:#E6F1FB;border-radius:10px;padding:10px;margin-bottom:14px;font-size:12px;color:#0C447C;line-height:1.6"><strong style="font-weight:600">Rota semanal:</strong> planejamento fixo Seg-Sex. Gerado uma vez e salvo durante a semana.</div>
+      <button class="btn btn-dark" onclick="salvarPerfil()">Salvar</button>
+    </div>
+    <button class="btn btn-sec" onclick="sair()" style="margin-top:4px">Sair da conta</button>
+    <div class="card" style="background:#FCEBEB;border-color:#F7C1C1;margin-top:10px">
+      <p style="font-size:11px;font-weight:600;color:#A32D2D;margin-bottom:8px">ZONA DE PERIGO</p>
+      <button class="btn" style="background:#A32D2D;margin-top:0" onclick="limparDados()">Apagar todos os dados</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- TABBAR -->
+<div class="tabbar">
+  <button class="tab on" id="tab-home" onclick='ir("home")'>
+    <svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/></svg>Home
+  </button>
+  <button class="tab" id="tab-rota" onclick='ir("rota")'>
+    <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Rota
+  </button>
+  <button class="tab" id="tab-alertas" onclick='ir("alertas")'>
+    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Alertas
+  </button>
+  <button class="tab" id="tab-clientes" onclick='ir("clientes")'>
+    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Clientes
+  </button>
+  <button class="tab" id="tab-analise" onclick='ir("analise")'>
+    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Analise
+  </button>
+  <button class="tab" id="tab-agenda" onclick='ir("agenda")'>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Agenda
+  </button>
+</div>
+
+<!-- MODAL NOVO CLIENTE -->
+<div class="modal-bg" id="m-nc">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <p style="font-size:18px;font-weight:600;color:#111;margin-bottom:20px">Novo cliente</p>
+    <span class="flabel">NOME *</span><input type="text" id="nc-nome" placeholder="Nome da fazenda ou empresa" style="margin-bottom:4px">
+    <span class="flabel">CIDADE *</span><input type="text" id="nc-cidade" placeholder="Ex: Fortaleza" style="margin-bottom:4px">
+    <span class="flabel">TELEFONE</span><input type="tel" id="nc-tel" style="margin-bottom:4px">
+    <span class="flabel">LOCALIZACAO</span>
+    <div style="display:flex;gap:8px;margin-bottom:4px">
+      <input type="text" id="nc-end" placeholder="Endereco ou referencia" style="flex:1;margin-bottom:0">
+      <button type="button" onclick="capturarGPS()" id="btn-gps" style="padding:13px 14px;border-radius:12px;border:none;background:#1a1a2e;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0">GPS</button>
+    </div>
+    <div id="gps-ok" style="display:none" class="gps-ok">
+      <div><p style="font-size:11px;font-weight:600;color:#3B6D11;margin-bottom:2px">Localizacao capturada</p><p style="font-size:11px;color:#27500A" id="gps-coords">-</p></div>
+      <a id="gps-link" href="#" target="_blank" style="font-size:11px;color:#185FA5;font-weight:600;text-decoration:none">Ver mapa</a>
+    </div>
+    <input type="hidden" id="nc-lat"><input type="hidden" id="nc-lng">
+    <span class="flabel">ULTIMA COMPRA</span><input type="date" id="nc-ult" style="margin-bottom:4px">
+    <span class="flabel">VALOR MEDIO (R$)</span><input type="number" id="nc-val" placeholder="0,00" style="margin-bottom:4px">
+    <span class="flabel">CICLO MEDIO (DIAS)</span><input type="number" id="nc-ciclo" placeholder="30" style="margin-bottom:4px">
+    <span class="flabel">ANIVERSARIO</span><input type="date" id="nc-aniv" style="margin-bottom:4px">
+    <span class="flabel">OBSERVACOES</span><textarea id="nc-obs" rows="2" style="margin-bottom:14px"></textarea>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:12px;background:#f0f4ff;border-radius:10px;border:0.5px solid #c8d4f0">
+      <div>
+        <p style="font-size:13px;font-weight:500;color:#1a1a2e;margin:0">Cliente chave &#11088;</p>
+        <p style="font-size:11px;color:#666;margin:2px 0 0">Visita obrigatoria todo ciclo</p>
+      </div>
+      <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer" onclick="toggleChave()">
+        <input type="checkbox" id="nc-chave" style="opacity:0;width:0;height:0">
+        <span id="nc-chave-tog" style="position:absolute;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:24px;transition:.3s;display:flex;align-items:center">
+          <span style="height:18px;width:18px;margin-left:3px;background:white;border-radius:50%;transition:.3s;display:inline-block"></span>
+        </span>
+      </label>
+    </div>
+    <button class="btn btn-dark" onclick="salvarNC()">Salvar cliente</button>
+    <button class="btn btn-sec" onclick="fecharModal('m-nc')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL IMPORTAR -->
+<div class="modal-bg" id="m-imp">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <p style="font-size:18px;font-weight:600;color:#111;margin-bottom:8px">Importar clientes</p>
+    <div class="card card-blue" style="margin-bottom:14px">
+      <p style="font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:6px">COMO IMPORTAR</p>
+      <p style="font-size:12px;color:#333;line-height:1.7">1. Baixe a planilha modelo Excel abaixo<br>2. Preencha os clientes a partir da linha 5<br>3. Salve e carregue o arquivo aqui</p>
+    </div>
+    <label class="import-area" for="f-imp" style="cursor:pointer">
+      <input type="file" id="f-imp" accept=".xlsx,.xls,.csv" onchange="importarPlanilha(this)" style="display:none">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:8px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <p style="font-size:14px;font-weight:600;color:#333;margin:0">Selecionar arquivo Excel</p>
+      <p style="font-size:11px;color:#888;margin:4px 0 0">Aceita .xlsx, .xls e .csv</p>
+    </label>
+    <div id="imp-status" style="display:none" class="card card-green"><p style="font-size:13px;color:#3B6D11;font-weight:600" id="imp-msg">Importando...</p></div>
+    <button class="btn btn-dark" onclick="baixarModelo()">Baixar planilha modelo Excel</button>
+    <button class="btn btn-sec" onclick="fecharModal('m-imp')">Fechar</button>
+  </div>
+</div>
+<!-- AGENDA -->
+<div id="pg-agenda" class="screen">
+  <div class="topbar">
+    <p class="topbar-title">Agenda do mes</p>
+    <p class="topbar-sub" id="ag-sub">Clientes chave</p>
+  </div>
+  <div class="section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <button onclick="mudarMes(-1)" style="width:36px;height:36px;border-radius:50%;border:0.5px solid #e0e0e0;background:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">&#8249;</button>
+      <p style="font-size:16px;font-weight:500;color:#1a1a2e;margin:0" id="ag-mes-label">Abril 2026</p>
+      <button onclick="mudarMes(1)" style="width:36px;height:36px;border-radius:50%;border:0.5px solid #e0e0e0;background:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">&#8250;</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+      <div class="card" style="text-align:center;padding:12px 8px">
+        <p style="font-size:20px;font-weight:500;color:#1a1a2e;margin:0" id="ag-total">0</p>
+        <p style="font-size:10px;color:#888;margin:2px 0 0">Chaves</p>
+      </div>
+      <div class="card" style="text-align:center;padding:12px 8px">
+        <p style="font-size:20px;font-weight:500;color:#27500A;margin:0" id="ag-confirm">0</p>
+        <p style="font-size:10px;color:#888;margin:2px 0 0">Confirmados</p>
+      </div>
+      <div class="card" style="text-align:center;padding:12px 8px">
+        <p style="font-size:20px;font-weight:500;color:#854F0B;margin:0" id="ag-pend">0</p>
+        <p style="font-size:10px;color:#888;margin:2px 0 0">Pendentes</p>
+      </div>
+    </div>
+    <p id="ag-sem-tel" style="display:none;font-size:11px;color:#854F0B;background:#FAEEDA;padding:8px 12px;border-radius:8px;margin-bottom:10px;text-align:center"></p>
+    <button id="btn-wpp-todos" onclick="abrirWppTodos()" style="width:100%;padding:12px;border-radius:12px;border:none;background:#25D366;color:#fff;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;display:none;align-items:center;justify-content:center;gap:8px;margin-bottom:16px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.985-1.31A9.945 9.945 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2z"/></svg>
+      Enviar WhatsApp para pendentes
+    </button>
+    <span class="slabel">CLIENTES CHAVE DO MES</span>
+    <div id="ag-lista"></div>
+  </div>
+</div>
+
+<!-- MODAL AGENDAR -->
+<div class="modal-bg" id="m-agenda">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <p style="font-size:18px;font-weight:500;color:#111;margin-bottom:4px" id="mag-nome">Cliente</p>
+    <p style="font-size:12px;color:#888;margin-bottom:16px" id="mag-info">Agendar visita</p>
+    <!-- Status confirmacao -->
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <button id="mag-pend" onclick="selConfirm(false)" class="tog sel" style="flex:1">Pendente</button>
+      <button id="mag-conf" onclick="selConfirm(true)" class="tog">Confirmado</button>
+    </div>
+    <!-- Data -->
+    <p style="font-size:10px;font-weight:500;color:#888;letter-spacing:.5px;margin:0 0 6px">DIA DA VISITA</p>
+    <input type="date" id="mag-data" style="margin-bottom:12px">
+    <!-- Periodo -->
+    <p style="font-size:10px;font-weight:500;color:#888;letter-spacing:.5px;margin:0 0 8px">PERIODO</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+      <button id="per-m" onclick="selPeriodo('manha')" class="tog" style="font-size:12px;padding:10px">&#127749; Manha</button>
+      <button id="per-t" onclick="selPeriodo('tarde')" class="tog" style="font-size:12px;padding:10px">&#127751; Tarde</button>
+      <button id="per-d" onclick="selPeriodo('dia_todo')" class="tog sel" style="font-size:12px;padding:10px">Dia todo</button>
+    </div>
+    <!-- Obs -->
+    <p style="font-size:10px;font-weight:500;color:#888;letter-spacing:.5px;margin:0 0 6px">OBSERVACOES</p>
+    <input type="text" id="mag-obs" placeholder="Ex: trazer proposta, visita tecnica..." style="margin-bottom:16px">
+    <!-- Botao WhatsApp -->
+    <div id="mag-sem-tel" style="display:none;margin-bottom:8px">
+      <p style="font-size:10px;font-weight:500;color:#888;letter-spacing:.5px;margin:0 0 6px">TELEFONE (necessario para WhatsApp)</p>
+      <input type="tel" id="mag-tel" placeholder="(85) 99999-0000" style="margin-bottom:8px">
+    </div>
+    <button id="mag-wpp" onclick="enviarWppAgendamento()" style="width:100%;padding:11px;border-radius:12px;border:none;background:#25D366;color:#fff;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.985-1.31A9.945 9.945 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2z"/></svg>
+      Abrir WhatsApp
+    </button>
+    <button onclick="salvarAgendamento()" class="btn btn-dark">Salvar agendamento</button>
+    <button onclick="fecharModal('m-agenda')" class="btn btn-sec">Cancelar</button>
+  </div>
+</div>
+
+<!-- CALENDARIO MENSAL (tela oculta, sem tab) -->
+<div id="pg-cal-mes" class="screen" style="display:none">
+  <div class="topbar" style="position:relative">
+    <button onclick="fecharCalMes()" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,0.1);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">&#8592;</button>
+    <p class="topbar-title" id="cm-titulo">Rota de Abril</p>
+    <p class="topbar-sub" id="cm-sub">Planejamento mensal</p>
+  </div>
+  <div class="section">
+    <!-- Navegação mês -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <button onclick="mudarMesCal(-1)" style="width:34px;height:34px;border-radius:50%;border:0.5px solid #e0e0e0;background:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">&#8249;</button>
+      <p style="font-size:15px;font-weight:500;color:#1a1a2e;margin:0" id="cm-mes-label">Abril 2026</p>
+      <button onclick="mudarMesCal(1)" style="width:34px;height:34px;border-radius:50%;border:0.5px solid #e0e0e0;background:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center">&#8250;</button>
+    </div>
+    <!-- Legenda -->
+    <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:3px;background:#1a1a2e"></div><p style="font-size:10px;color:#666;margin:0">Hoje</p></div>
+      <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:3px;background:#f0f4ff;border:0.5px solid #c8d4f0"></div><p style="font-size:10px;color:#666;margin:0">&#11088; Chave</p></div>
+      <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:3px;background:#EAF3DE;border:0.5px solid #C0DD97"></div><p style="font-size:10px;color:#666;margin:0">Confirmado</p></div>
+      <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:3px;background:#f5f5f7;border:0.5px solid #e0e0e0"></div><p style="font-size:10px;color:#666;margin:0">Visitas</p></div>
+    </div>
+    <!-- Grid calendario -->
+    <div id="cm-grid"></div>
+    <!-- Detalhe do dia -->
+    <div id="cm-detalhe" style="display:none;margin-top:12px"></div>
+  </div>
+</div>
+
+
+<!-- MODAL EDITAR CLIENTE -->
+<div class="modal-bg" id="m-edit-cliente">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <p style="font-size:18px;font-weight:500;color:#111;margin-bottom:16px">Editar cliente</p>
+
+    <span class="flabel">NOME</span>
+    <input type="text" id="ec-nome" placeholder="Nome do cliente">
+
+    <span class="flabel">CIDADE</span>
+    <input type="text" id="ec-cidade" placeholder="Cidade">
+
+    <span class="flabel">TELEFONE</span>
+    <input type="tel" id="ec-tel" placeholder="(85) 99999-0000">
+
+    <span class="flabel">ENDERECO / REFERENCIA</span>
+    <input type="text" id="ec-end" placeholder="Endereço ou ponto de referência">
+
+    <span class="flabel">CICLO DE COMPRA (dias)</span>
+    <input type="number" id="ec-ciclo" placeholder="30" min="1" max="365">
+
+    <span class="flabel">VALOR MEDIO (R$)</span>
+    <input type="number" id="ec-val" placeholder="0" min="0">
+
+    <span class="flabel">OBSERVACOES</span>
+    <input type="text" id="ec-obs" placeholder="Anotações sobre o cliente">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0;padding:12px;background:#f0f4ff;border-radius:10px;border:0.5px solid #c8d4f0">
+      <div>
+        <p style="font-size:13px;font-weight:500;color:#1a1a2e;margin:0">Cliente chave &#11088;</p>
+        <p style="font-size:11px;color:#666;margin:2px 0 0">Visita obrigatoria todo ciclo</p>
+      </div>
+      <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer" onclick="toggleChaveEdit()">
+        <input type="checkbox" id="ec-chave" style="opacity:0;width:0;height:0">
+        <span id="ec-chave-tog" style="position:absolute;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:24px;transition:.3s;display:flex;align-items:center">
+          <span style="height:18px;width:18px;margin-left:3px;background:white;border-radius:50%;transition:.3s;display:inline-block"></span>
+        </span>
+      </label>
+    </div>
+
+    <button class="btn btn-dark" onclick="salvarEdicaoCliente()">Salvar alterações</button>
+    <button class="btn btn-sec" onclick="fecharModal('m-edit-cliente')">Cancelar</button>
+  </div>
+</div>
+
+
+
+<div id="toast"></div>
+<script>
+// ── SUPABASE ────────────────────────────────────
+var SUPA_URL = "https://orqebmkqokguxxzvmjkh.supabase.co";
+var SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9ycWVibWtxb2tndXh4enZtamtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4NTI3MDksImV4cCI6MjA5MDQyODcwOX0.gv3YzAHwHvToDPnIwVRGbTcHnOZPvjtKFSCYC3XYSM8";
+var supaClient = null;
+var vendedorDB = null;
+
+function initSupabase() {
+  if (window.supabase) {
+    supaClient = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+    verificarSessao();
+  } else {
+    setTimeout(initSupabase, 200);
+  }
+}
+
+async function verificarSessao() {
+  try {
+    var r = await supaClient.auth.getSession();
+    if (r.data && r.data.session) {
+      await carregarPerfilVendedor();
+      irApp("home");
+    } else {
+      mostrarLogin();
+    }
+  } catch(e) {
+    mostrarLogin();
+  }
+}
+
+async function fazerLogin() {
+  var email = document.getElementById("login-email").value.trim();
+  var senha = document.getElementById("login-senha").value;
+  if (!email || !senha) { showLoginMsg("Preencha email e senha.", "erro"); return; }
+  if (!supaClient) {
+    showLoginMsg("Carregando... Tente novamente em instantes.", "info");
+    setTimeout(function(){ if(supaClient) fazerLogin(); else showLoginMsg("Sem conexao. Verifique sua internet.", "erro"); }, 2000);
+    return;
+  }
+  showLoginMsg("Entrando...", "info");
+  try {
+    var r = await supaClient.auth.signInWithPassword({email: email, password: senha});
+    if (r.error) { showLoginMsg(r.error.message, "erro"); return; }
+    await carregarPerfilVendedor();
+    irApp("home");
+  } catch(e) {
+    showLoginMsg("Erro de conexao. Verifique sua internet e tente novamente.", "erro");
+  }
+}
+
+async function fazerCadastro() {
+  var nome = document.getElementById("cad-nome").value.trim();
+  var email = document.getElementById("cad-email").value.trim();
+  var senha = document.getElementById("cad-senha").value;
+  if (!nome || !email || !senha) { showLoginMsg("Preencha todos os campos.", "erro"); return; }
+  if (senha.length < 6) { showLoginMsg("Senha minimo 6 caracteres.", "erro"); return; }
+  showLoginMsg("Criando conta...", "info");
+  var r = await supaClient.auth.signUp({
+    email: email, password: senha,
+    options: { data: { nome: nome } }
+  });
+  if (r.error) { showLoginMsg(r.error.message, "erro"); return; }
+  if (r.data && r.data.session) {
+    await carregarPerfilVendedor();
+    irApp("home");
+  } else {
+    showLoginMsg("Conta criada! Verifique seu email para confirmar.", "ok");
+  }
+}
+
+async function fazerLogout() {
+  await supaClient.auth.signOut();
+  vendedorDB = null;
+  VD.clientes = []; VD.visitas = {}; VD.rotaSemanal = null;
+  salvar();
+  mostrarLogin();
+}
+
+async function carregarPerfilVendedor() {
+  var r = await supaClient.from("vendedores").select("*").single();
+  if (r.data) {
+    vendedorDB = r.data;
+    // Sempre carregar do banco — nao misturar com localStorage
+    VD.vendedor.nome = r.data.nome || "";
+    VD.vendedor.empresa = r.data.empresa || "";
+    VD.vendedor.md = parseFloat(r.data.meta_diaria) || 2000;
+    VD.vendedor.mm = parseFloat(r.data.meta_mensal) || 40000;
+    VD.vendedor.vmes = parseFloat(r.data.vendido_mes) || 0;
+    VD.vendedor.maxRota = r.data.max_rota || 15;
+    VD.vendedor.tipoRota = r.data.tipo_rota || "diaria";
+    // Limpar dados locais antes de carregar do banco
+    VD.clientes = [];
+    VD.visitas = {};
+    VD.rotaSemanal = null;
+    await carregarClientes();
+    await carregarVisitasHoje();
+    salvar(); // persistir localmente apos carregar banco
+  }
+}
+
+async function carregarClientes() {
+  var r = await supaClient.from("clientes")
+    .select("id, nome, cidade, telefone, endereco, ultima_compra, valor_medio, ciclo_dias, aniversario, canal, observacoes, lat, lng, cliente_chave")
+    .eq("ativo", true)
+    .order("nome");
+  if (r.error) { console.error("Erro carregar clientes:", r.error); return; }
+  if (r.data) {
+    VD.clientes = r.data.map(function(c) {
+      return {
+        id: c.id,
+        nome: c.nome || "",
+        cidade: c.cidade || "",
+        tel: c.telefone || "",
+        end: c.endereco || "",
+        ult: c.ultima_compra || "",
+        val: parseFloat(c.valor_medio) || 0,
+        ciclo: parseInt(c.ciclo_dias) || 30,
+        aniv: c.aniversario || "",
+        obs: c.observacoes || "",
+        canal: c.canal || "",
+        lat: c.lat || null,
+        lng: c.lng || null,
+        chave: c.cliente_chave || false,
+        score: 0, status: "", dias: 0, naRota: false
+      };
+    });
+    salvar();
+  }
+}
+
+async function carregarVisitasHoje() {
+  var hoje = new Date().toISOString().split("T")[0];
+  var r = await supaClient.from("visitas")
+    .select("id, cliente_id, visitou, vendeu, valor_vendido, motivo_nao_venda, observacoes")
+    .eq("data_visita", hoje);
+  if (r.error) { console.error("Erro carregar visitas:", r.error); return; }
+  if (r.data) {
+    VD.visitas = {};
+    r.data.forEach(function(v) {
+      VD.visitas["id_" + v.cliente_id] = {
+        visitou: v.visitou,
+        vendeu: v.vendeu,
+        valor: parseFloat(v.valor_vendido) || 0,
+        motivo: v.motivo_nao_venda || "",
+        obs: v.observacoes || "",
+        dbId: v.id
+      };
+    });
+    salvar();
+  }
+}
+
+async function salvarVisitaDB(clienteId, dados) {
+  if (!supaClient || !vendedorDB) return;
+  var hoje = new Date().toISOString().split("T")[0];
+  var payload = {
+    cliente_id: clienteId,
+    vendedor_id: vendedorDB.id,
+    visitou: dados.visitou,
+    vendeu: dados.vendeu,
+    valor_vendido: dados.valor || 0,
+    motivo_nao_venda: dados.motivo || "",
+    observacoes: dados.obs || "",
+    data_visita: hoje
+  };
+  var dbId = dados.dbId;
+  if (dbId) {
+    var r = await supaClient.from("visitas").update(payload).eq("id", dbId);
+    if (r.error) console.error("Erro update visita:", r.error);
+  } else {
+    var r2 = await supaClient.from("visitas").insert(payload).select("id").single();
+    if (r2.error) { console.error("Erro insert visita:", r2.error); return; }
+    if (r2.data) dados.dbId = r2.data.id;
+  }
+  if (dados.vendeu && dados.valor > 0) {
+    await supaClient.rpc("registrar_venda", {
+      p_cliente_id: clienteId,
+      p_vendedor_id: vendedorDB.id,
+      p_valor: dados.valor,
+      p_data: hoje
+    });
+  }
+}
+
+async function salvarClienteDB(cliente) {
+  if (!supaClient || !vendedorDB) return null;
+  var payload = {
+    vendedor_id: vendedorDB.id,
+    nome: cliente.nome,
+    cidade: cliente.cidade || null,
+    telefone: cliente.tel || null,
+    endereco: cliente.end || null,
+    ultima_compra: cliente.ult || null,
+    valor_medio: parseFloat(cliente.val) || 0,
+    ciclo_dias: parseInt(cliente.ciclo) || 30,
+    aniversario: cliente.aniv || null,
+    canal: cliente.canal || null,
+    observacoes: cliente.obs || null,
+    lat: cliente.lat ? parseFloat(cliente.lat) : null,
+    lng: cliente.lng ? parseFloat(cliente.lng) : null,
+    cliente_chave: cliente.chave || false,
+    ativo: true
+  };
+  var r = await supaClient.from("clientes").insert(payload).select("id").single();
+  if (r.error) { console.error("Erro salvar cliente:", r.error); return null; }
+  if (r.data) {
+    cliente.id = r.data.id; // atualizar ID local para UUID do banco
+    salvar();
+  }
+  return r.data;
+}
+
+async function importarClientesDB(listaClientes) {
+  if (!supaClient || !vendedorDB || listaClientes.length === 0) return {importados:0};
+  var payload = listaClientes.map(function(c) {
+    return {
+      nome: c.nome, cidade: c.cidade || null, telefone: c.tel || null,
+      endereco: c.end || null, ultima_compra: c.ult || null,
+      valor_medio: parseFloat(c.val) || 0,
+      ciclo_dias: parseInt(c.ciclo) || 30,
+      aniversario: c.aniv || null, canal: c.canal || null,
+      observacoes: c.obs || null
+    };
+  });
+  var r = await supaClient.rpc("importar_clientes", {
+    p_vendedor_id: vendedorDB.id,
+    p_clientes: JSON.stringify(payload)
+  });
+  if (r.error) { console.error("Erro importar:", r.error); return {importados:0}; }
+  // Recarregar clientes do banco para pegar os UUIDs corretos
+  await carregarClientes();
+  return r.data || {importados: payload.length};
+}
+
+async function salvarPerfilDB() {
+  if (!supaClient || !vendedorDB) return;
+  var r = await supaClient.from("vendedores").update({
+    nome: VD.vendedor.nome,
+    empresa: VD.vendedor.empresa || null,
+    meta_diaria: VD.vendedor.md,
+    meta_mensal: VD.vendedor.mm,
+    vendido_mes: VD.vendedor.vmes || 0,
+    max_rota: VD.vendedor.maxRota,
+    tipo_rota: VD.vendedor.tipoRota
+  }).eq("id", vendedorDB.id);
+  if (r.error) console.error("Erro salvar perfil:", r.error);
+}
+
+function showLoginMsg(msg, tipo) {
+  var el = document.getElementById("login-msg");
+  el.textContent = msg;
+  el.style.display = "block";
+  el.style.background = tipo==="erro"?"#FCEBEB":tipo==="ok"?"#EAF3DE":"#E6F1FB";
+  el.style.color = tipo==="erro"?"#A32D2D":tipo==="ok"?"#3B6D11":"#185FA5";
+}
+
+function mostrarLogin() {
+  document.getElementById("login-overlay").style.display = "flex";
+  document.getElementById("login-form").style.display = "block";
+  document.getElementById("cadastro-form").style.display = "none";
+  document.getElementById("login-msg").style.display = "none";
+  var telas = ["home","rota","alertas","clientes","analise","cliente","visita","perfil"];
+  for(var i=0;i<telas.length;i++){var el=document.getElementById("pg-"+telas[i]);if(el)el.className="screen";}
+}
+
+function mostrarCadastro() {
+  document.getElementById("login-form").style.display = "none";
+  document.getElementById("cadastro-form").style.display = "block";
+  document.getElementById("login-msg").style.display = "none";
+}
+
+function irApp(pg) {
+  document.getElementById("login-overlay").style.display = "none";
+  ir(pg);
+}
+// ── FIM SUPABASE ────────────────────────────────────
+
+function irHome(){ir("home");}
+function irRota(){ir("rota");}
+function irAlertas(){ir("alertas");}
+function irClientes(){ir("clientes");}
+function irAnalise(){ir("analise");}
+function irPerfil(){ir("perfil");}
+
+var VD = {
+  vendedor: JSON.parse(localStorage.getItem("v360_vd") || '{"nome":"Vendedor","empresa":"","tel":"","md":2000,"mm":40000,"vmes":0,"maxRota":15,"tipoRota":"diaria"}'),
+  clientes: JSON.parse(localStorage.getItem("v360_cl") || "[]"),
+  visitas: JSON.parse(localStorage.getItem("v360_vi") || "{}"),
+  rotaSemanal: JSON.parse(localStorage.getItem("v360_rs") || "null"),
+  locVendedor: null,
+  clienteAtual: 0,
+  origemVisita: "home",
+  diaSemanaVer: 0
+};
+
+function salvar() {
+  localStorage.setItem("v360_vd", JSON.stringify(VD.vendedor));
+  localStorage.setItem("v360_cl", JSON.stringify(VD.clientes));
+  localStorage.setItem("v360_vi", JSON.stringify(VD.visitas));
+}
+
+if (VD.clientes.length === 0) {
+  VD.clientes = []; VD.visitas = {}; VD.rotaSemanal = null;
+  mostrarLogin();
+  document.getElementById("login-overlay").style.display = "flex";
+}
+
+async function carregarPerfilVendedor() {
+  var r = await supaClient.from("vendedores").select("*").single();
+  if (r.data) {
+    vendedorDB = r.data;
+    VD.vendedor.nome = r.data.nome || VD.vendedor.nome;
+    VD.vendedor.empresa = r.data.empresa || "";
+    VD.vendedor.md = parseFloat(r.data.meta_diaria) || 2000;
+    VD.vendedor.mm = parseFloat(r.data.meta_mensal) || 40000;
+    VD.vendedor.vmes = parseFloat(r.data.vendido_mes) || 0;
+    VD.vendedor.maxRota = r.data.max_rota || 15;
+    VD.vendedor.tipoRota = r.data.tipo_rota || "diaria";
+    await carregarClientes();
+    await carregarVisitasHoje();
+  }
+}
+
+async function carregarClientes() {
+  // Usar funcao do banco que retorna campos padronizados
+  var r = await supaClient.rpc("carregar_clientes", {
+    p_vendedor_id: vendedorDB.id,
+    p_limite: 500,
+    p_offset: 0
+  });
+  if (r.data && r.data.length > 0) {
+    VD.clientes = r.data.map(function(c) {
+      return {
+        id: c.id, nome: c.nome, cidade: c.cidade || "",
+        tel: c.telefone || "", end: c.endereco || "",
+        ult: c.ultima_compra || "", val: parseFloat(c.valor_medio) || 0,
+        ciclo: parseInt(c.ciclo_dias) || 30,
+        aniv: c.aniversario || "", obs: c.observacoes || "",
+        canal: c.canal || "", lat: c.lat, lng: c.lng,
+        score: 0, status: "", dias: 0, naRota: false
+      };
+    });
+  }
+}
+
+async function carregarVisitasHoje() {
+  var hoje = new Date().toISOString().split("T")[0];
+  var r = await supaClient.from("visitas")
+    .select("*")
+    .eq("data_visita", hoje);
+  if (r.data) {
+    VD.visitas = {};
+    r.data.forEach(function(v) {
+      VD.visitas["id_" + v.cliente_id] = {
+        visitou: v.visitou, vendeu: v.vendeu,
+        valor: parseFloat(v.valor_vendido) || 0,
+        motivo: v.motivo_nao_venda || "", obs: v.observacoes || "",
+        dbId: v.id
+      };
+    });
+  }
+}
+
+async function salvarVisitaDB(clienteId, dados) {
+  var hoje = new Date().toISOString().split("T")[0];
+  var existente = VD.visitas["id_" + clienteId];
+  var payload = {
+    cliente_id: clienteId,
+    vendedor_id: vendedorDB.id,
+    visitou: dados.visitou,
+    vendeu: dados.vendeu,
+    valor_vendido: dados.valor || 0,
+    motivo_nao_venda: dados.motivo || "",
+    observacoes: dados.obs || "",
+    data_visita: hoje
+  };
+  if (existente && existente.dbId) {
+    await supaClient.from("visitas").update(payload).eq("id", existente.dbId);
+  } else {
+    var r = await supaClient.from("visitas").insert(payload).select().single();
+    if (r.data) dados.dbId = r.data.id;
+  }
+  // Usar funcao do banco para atualizar ultima compra e valor medio
+  if (dados.vendeu && dados.valor > 0) {
+    await supaClient.rpc("registrar_venda", {
+      p_cliente_id: clienteId,
+      p_vendedor_id: vendedorDB.id,
+      p_valor: dados.valor,
+      p_data: hoje
+    });
+  }
+}
+
+async function salvarPerfilDB() {
+  if (!vendedorDB) return;
+  await supaClient.from("vendedores").update({
+    nome: VD.vendedor.nome,
+    empresa: VD.vendedor.empresa,
+    meta_diaria: VD.vendedor.md,
+    meta_mensal: VD.vendedor.mm,
+    vendido_mes: VD.vendedor.vmes,
+    max_rota: VD.vendedor.maxRota,
+    tipo_rota: VD.vendedor.tipoRota
+  }).eq("id", vendedorDB.id);
+}
+
+async function salvarClienteDB(cliente) {
+  if (!vendedorDB) return;
+  // Usar funcao de importacao em lote (funciona para 1 ou N clientes)
+  var r = await supaClient.rpc("importar_clientes", {
+    p_vendedor_id: vendedorDB.id,
+    p_clientes: JSON.stringify([{
+      nome: cliente.nome, cidade: cliente.cidade,
+      telefone: cliente.tel, endereco: cliente.end,
+      ultima_compra: cliente.ult || null,
+      valor_medio: cliente.val,
+      ciclo_dias: cliente.ciclo,
+      aniversario: cliente.aniv || null,
+      observacoes: cliente.obs,
+      canal: cliente.canal || ""
+    }])
+  });
+  // Recarregar ID real do banco
+  if (r.data && r.data.importados > 0) {
+    var rc = await supaClient.from("clientes")
+      .select("id").eq("vendedor_id", vendedorDB.id)
+      .eq("nome", cliente.nome).order("criado_em", {ascending:false}).limit(1).single();
+    if (rc.data) cliente.id = rc.data.id;
+  }
+  return r;
+}
+
+async function importarClientesDB(listaClientes) {
+  if (!vendedorDB || listaClientes.length === 0) return {importados:0, erros:0};
+  var payload = listaClientes.map(function(c) {
+    return {
+      nome: c.nome, cidade: c.cidade, telefone: c.tel,
+      endereco: c.end, ultima_compra: c.ult || null,
+      valor_medio: c.val, ciclo_dias: c.ciclo,
+      aniversario: c.aniv || null, canal: c.canal || "",
+      observacoes: c.obs
+    };
+  });
+  var r = await supaClient.rpc("importar_clientes", {
+    p_vendedor_id: vendedorDB.id,
+    p_clientes: JSON.stringify(payload)
+  });
+  return r.data || {importados:0, erros:0};
+}
+
+function showLoginMsg(msg, tipo) {
+  var el = document.getElementById("login-msg");
+  el.textContent = msg;
+  el.style.display = "block";
+  el.style.background = tipo === "erro" ? "#FCEBEB" : tipo === "ok" ? "#EAF3DE" : "#E6F1FB";
+  el.style.color = tipo === "erro" ? "#A32D2D" : tipo === "ok" ? "#3B6D11" : "#185FA5";
+}
+
+function mostrarLogin() {
+  document.getElementById("login-form").style.display = "block";
+  document.getElementById("cadastro-form").style.display = "none";
+  document.getElementById("login-msg").style.display = "none";
+}
+
+function mostrarCadastro() {
+  document.getElementById("login-form").style.display = "none";
+  document.getElementById("cadastro-form").style.display = "block";
+  document.getElementById("login-msg").style.display = "none";
+}
+
+function irApp(pg) {
+  document.getElementById("login-overlay").style.display = "none";
+  ir(pg);
+}
+// ── FIM SUPABASE ────────────────────────────────
+
+function irHome(){ir("home");}
+function irRota(){ir("rota");}
+function irAlertas(){ir("alertas");}
+function irClientes(){ir("clientes");}
+function irAnalise(){ir("analise");}
+function irPerfil(){ir("perfil");}
+
+var VD = {
+  vendedor: JSON.parse(localStorage.getItem("v360_vd") || '{"nome":"Vendedor","empresa":"","tel":"","md":2000,"mm":40000,"vmes":0,"maxRota":15,"tipoRota":"diaria"}'),
+  clientes: JSON.parse(localStorage.getItem("v360_cl") || "[]"),
+  visitas: JSON.parse(localStorage.getItem("v360_vi") || "{}"),
+  rotaSemanal: JSON.parse(localStorage.getItem("v360_rs") || "null"),
+  locVendedor: null,
+  clienteAtual: 0,
+  origemVisita: "home",
+  diaSemanaVer: 0
+};
+
+function salvar() {
+  localStorage.setItem("v360_vd", JSON.stringify(VD.vendedor));
+  localStorage.setItem("v360_cl", JSON.stringify(VD.clientes));
+  localStorage.setItem("v360_vi", JSON.stringify(VD.visitas));
+}
+
+// App inicia sem clientes — carregados do Supabase apos login
+
+function diasDesdeCompra(c) {
+  if (!c.ult) return 999;
+  var h = new Date(); h.setHours(0,0,0,0);
+  var u = new Date(c.ult); u.setHours(0,0,0,0);
+  return Math.floor((h - u) / 86400000);
+}
+
+function calcScore(c) {
+  var dias=diasDesdeCompra(c),ciclo=c.ciclo||30,ratio=dias/ciclo,s=0;
+  if(ratio>=2)s+=45;else if(ratio>=1.5)s+=38;else if(ratio>=1.3)s+=32;else if(ratio>=1)s+=25;else if(ratio>=0.8)s+=15;else s+=5;
+  if(ratio>=2)s+=30;else if(ratio>=1.5)s+=22;else if(ratio>=1.3)s+=16;else if(ratio>=1)s+=8;
+  if(c.val>0)s+=Math.min(15,Math.max(0,Math.round((Math.log10(c.val)-2.5)*9)));
+  if(c.aniv){var a=new Date(c.aniv),h2=new Date();if(a.getMonth()===h2.getMonth()&&a.getDate()===h2.getDate())s+=10;}
+  s=Math.min(100,s);
+  return {s:s,st:s>=60?"urgente":s>=35?"atencao":s>=15?"ativo":"inativo",dias:dias};
+}
+
+function recalc() {
+  for(var i=0;i<VD.clientes.length;i++){
+    var r=calcScore(VD.clientes[i]);
+    VD.clientes[i].score=r.s;VD.clientes[i].status=r.st;VD.clientes[i].dias=r.dias;
+    var v=VD.visitas["id_"+VD.clientes[i].id];
+    // Cliente chave: sempre na rota se nao visitou hoje
+    // Cliente comum: entra pelo ciclo de compras
+    var jaVisitouHoje = v && v.visitou;
+    if(VD.clientes[i].chave){
+      VD.clientes[i].naRota = !jaVisitouHoje;
+    } else {
+      VD.clientes[i].naRota = !jaVisitouHoje && !(v&&v.vendeu) && (r.dias>=(VD.clientes[i].ciclo||30)-10);
+    }
+  }
+  VD.clientes.sort(function(a,b){return b.score-a.score;});
+}
+
+function distKm(lat1,lng1,lat2,lng2){
+  var R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
+  var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function scoreComDist(sc,dist){
+  if(!dist)return sc;
+  var b=dist<=5?30:dist<=15?22:dist<=30?15:dist<=60?8:dist<=100?3:0;
+  return Math.min(100,Math.round(sc*0.7+b*0.3));
+}
+
+function rotaNearest(clientes,latI,lngI){
+  if(clientes.length===0)return[];
+  var rest=clientes.slice(),rota=[],latA=latI,lngA=lngI;
+  while(rest.length>0){
+    var mi=0,md=Infinity;
+    for(var i=0;i<rest.length;i++){
+      var c=rest[i],d=c.lat&&c.lng?distKm(latA,lngA,parseFloat(c.lat),parseFloat(c.lng)):9999;
+      if(d<md){md=d;mi=i;}
+    }
+    var esc=rest.splice(mi,1)[0];
+    esc.distDoAnterior=md===9999?null:md;
+    rota.push(esc);
+    if(esc.lat&&esc.lng){latA=parseFloat(esc.lat);lngA=parseFloat(esc.lng);}
+  }
+  return rota;
+}
+
+function urgenciaCiclo(c){return c.dias/(c.ciclo||30);}
+function corSc(st){return st==="urgente"?"sc-r":st==="atencao"?"sc-a":"sc-g";}
+function corBtn(st){return st==="urgente"?"btn-r":st==="atencao"?"btn-a":"btn-g";}
+function chipHtml(c){
+  var badge = c.chave ? '<span class="chip" style="background:#2D2D4E;color:#fff;margin-right:4px">&#11088; Chave</span>' : '';
+  if(c.status==="urgente")return badge+'<span class="chip chip-r">Vencido '+Math.max(0,c.dias-(c.ciclo||30))+' dias</span>';
+  if(c.status==="atencao"){var h=new Date(),a=c.aniv?new Date(c.aniv):null;if(a&&a.getMonth()===h.getMonth()&&a.getDate()===h.getDate())return badge+'<span class="chip chip-a">Aniversario hoje</span>';return badge+'<span class="chip chip-a">Proximo do ciclo</span>';}
+  if(c.naRota)return badge+'<span class="chip chip-b">Entrando no ciclo</span>';
+  return badge+'<span class="chip chip-g">Ativo</span>';
+}
+function vendidoHoje(){var t=0;for(var k in VD.visitas)if(VD.visitas[k].vendeu)t+=VD.visitas[k].valor;return t;}
+function iniciais(){return VD.vendedor.nome.split(" ").map(function(n){return n[0]||"";}).slice(0,2).join("");}
+
+
+function renderHome(){
+  recalc();
+  var dias=["Dom","Seg","Ter","Qua","Qui","Sex","Sab"],meses=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+  var hoje=new Date(),h=hoje.getHours(),sd=h<12?"Bom dia":h<18?"Boa tarde":"Boa noite";
+  document.getElementById("h-data").textContent=dias[hoje.getDay()]+", "+hoje.getDate()+" de "+meses[hoje.getMonth()];
+  document.getElementById("h-greeting").textContent=sd+", "+VD.vendedor.nome.split(" ")[0];
+  document.getElementById("av1").textContent=iniciais();
+  var vendido=vendidoHoje();
+  var rotaHoje=[];
+  for(var i=0;i<VD.clientes.length;i++){if(VD.clientes[i].naRota)rotaHoje.push({c:VD.clientes[i],i:i});}
+  var pend=rotaHoje.filter(function(o){var v=VD.visitas["id_"+o.c.id];return!(v&&v.visitou);});
+  document.getElementById("h-vhoje").textContent="R$"+vendido.toLocaleString("pt-BR");
+  document.getElementById("h-pend").textContent=pend.length;
+  var faltaDia=Math.max(0,VD.vendedor.md-vendido);
+  document.getElementById("h-meta-val").textContent="R$"+vendido.toLocaleString("pt-BR");
+  document.getElementById("h-falta").textContent=faltaDia>0?"Falta R$"+faltaDia.toLocaleString("pt-BR"):"Meta atingida!";
+  var vmes=(VD.vendedor.vmes||0)+vendido,faltaMes=Math.max(0,VD.vendedor.mm-vmes);
+  document.getElementById("hm-val").textContent="R$"+vmes.toLocaleString("pt-BR");
+  document.getElementById("hm-falta").textContent=faltaMes>0?"Falta R$"+faltaMes.toLocaleString("pt-BR"):"Meta atingida!";
+  var html="";
+  if(VD.clientes.length===0){
+    html='<div class="card" style="text-align:center;padding:24px"><p style="font-size:14px;color:#888">Nenhum cliente cadastrado.</p><button class="btn btn-dark" style="margin-top:12px" onclick="irClientes()">Cadastrar primeiro cliente</button></div>';
+  } else if(pend.length===0){
+    html='<div class="card card-green" style="text-align:center;padding:24px"><p style="font-size:28px;margin-bottom:8px">&#127881;</p><p style="font-size:15px;font-weight:500;color:#27500A">Todas as visitas concluidas!</p></div>';
+  } else {
+    var top=pend.slice(0,3);
+    for(var x=0;x<top.length;x++){
+      var c=top[x].c,idx=top[x].i;
+      html+='<div class="card"><div style="display:flex;gap:12px;align-items:center">';
+      html+='<div class="score '+corSc(c.status)+'">'+c.score+'</div>';
+      html+='<div style="flex:1"><p style="font-size:15px;font-weight:500;color:#111">'+c.nome+'</p>';
+      html+='<p style="font-size:11px;color:#888;margin:3px 0">'+c.dias+' dias sem comprar - '+c.cidade+'</p>';
+      html+=chipHtml(c)+'</div></div>';
+      html+='<button class="btn '+corBtn(c.status)+'" id="hbtn-'+idx+'" style="margin-top:10px;width:100%">Iniciar visita</button></div>';
+    }
+    if(pend.length>3)html+='<p style="font-size:12px;color:#888;text-align:center;padding:8px 0">+'+(pend.length-3)+' clientes na aba Rota</p>';
+  }
+  var feitos=rotaHoje.filter(function(o){var v=VD.visitas["id_"+o.c.id];return v&&v.visitou;});
+  if(feitos.length>0){
+    html+='<span class="slabel" style="margin-top:16px">VISITADOS HOJE</span>';
+    for(var y=0;y<feitos.length;y++){
+      var fc=feitos[y].c,fi=feitos[y].i,fv=VD.visitas["id_"+fc.id];
+      html+='<div class="card" style="opacity:.8"><div style="display:flex;gap:12px;align-items:center">';
+      html+='<div style="width:44px;height:44px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center;font-size:20px">&#10003;</div>';
+      html+='<div style="flex:1"><p style="font-size:14px;font-weight:500;color:#111">'+fc.nome+'</p>';
+      html+=fv.vendeu?'<span class="chip chip-g">Vendeu R$'+fv.valor.toLocaleString("pt-BR")+'</span>':'<span class="chip" style="background:#f0f0f0;color:#888">Visitado</span>';
+      html+='</div><button id="avbtn-'+fi+'" data-org="home" style="padding:6px 12px;border-radius:8px;border:0.5px solid #ddd;background:transparent;color:#666;font-size:11px;cursor:pointer;font-family:inherit">Editar</button></div></div>';
+    }
+  }
+  document.getElementById("home-lista").innerHTML=html;
+  // Listeners botoes home
+  setTimeout(function(){
+    var topB=pend.slice(0,3);
+    for(var hbi=0;hbi<topB.length;hbi++){
+      (function(hidx,horg){
+        var hbtn=document.getElementById("hbtn-"+hidx);
+        if(hbtn)hbtn.addEventListener("click",function(){abrirVisita(horg,"home");});
+      })(topB[hbi].i, hbi);
+    }
+  },0);
+}
+
+function obterGPS(){
+  var btn=document.getElementById("btn-minha-loc");
+  btn.textContent="...";btn.style.background="#854F0B";
+  if(!navigator.geolocation){renderRota();return;}
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      VD.locVendedor={lat:pos.coords.latitude,lng:pos.coords.longitude};
+      btn.textContent="Localizado";btn.style.background="#27500A";
+      document.getElementById("loc-txt").textContent="Rota otimizada por ciclo + distancia";
+      renderRota();
+      verificarProximidadeUrgentes();
+    },
+    function(){VD.locVendedor=null;btn.textContent="GPS";btn.style.background="#1a1a2e";renderRota();},
+    {enableHighAccuracy:true,timeout:8000}
+  );
+}
+
+function verificarProximidadeUrgentes(){
+  if(!VD.locVendedor)return;
+  recalc();
+  var max=VD.vendedor.maxRota||15;
+  var idsNaRota=getRotaOrdenada().slice(0,max).map(function(o){return o.id;});
+  var alertas=[];
+  for(var i=0;i<VD.clientes.length;i++){
+    var c=VD.clientes[i];
+    if(!c.naRota||idsNaRota.indexOf(c.id)>=0||!c.lat||!c.lng)continue;
+    var d=distKm(VD.locVendedor.lat,VD.locVendedor.lng,parseFloat(c.lat),parseFloat(c.lng));
+    if(d<=5)alertas.push({c:c,dist:d});
+  }
+  if(alertas.length===0)return;
+  alertas.sort(function(a,b){return a.dist-b.dist;});
+  var mais=alertas[0];
+  var msg=mais.c.nome+" esta a "+mais.dist.toFixed(1)+"km e nao foi visitado ha "+mais.c.dias+" dias.";
+  mostrarAlertaProximidade(msg,mais.c,alertas.length);
+}
+
+function mostrarAlertaProximidade(msg,cliente,total){
+  var ant=document.getElementById("alerta-prox");if(ant)ant.remove();
+  var idx=-1;
+  for(var i=0;i<VD.clientes.length;i++){if(VD.clientes[i].id===cliente.id){idx=i;break;}}
+  var div=document.createElement("div");
+  div.id="alerta-prox";
+  div.style.cssText="position:fixed;bottom:90px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;background:#1a1a2e;border-radius:14px;padding:14px 16px;z-index:150";
+  var extra=total>1?" (+"+(total-1)+")":"";
+  div.innerHTML="<div style='display:flex;gap:12px;align-items:flex-start'>"
+    +"<div style='width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0'>&#128205;</div>"
+    +"<div style='flex:1'><p style='font-size:12px;font-weight:500;color:rgba(255,255,255,0.6);margin:0 0 2px'>CLIENTE PROXIMO"+extra+"</p>"
+    +"<p style='font-size:13px;color:#fff;margin:0 0 10px;line-height:1.5'>"+msg+"</p>"
+    +"<div style='display:flex;gap:8px'>"
+    +(idx>=0?"<button id='btn-vp' style='flex:1;padding:8px;border-radius:8px;border:none;background:#fff;color:#1a1a2e;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit'>Visitar agora</button>":"")
+    +"<button id='btn-ip' style='padding:8px 14px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.7);font-size:12px;cursor:pointer;font-family:inherit'>Ignorar</button>"
+    +"</div></div></div>";
+  document.querySelector(".app").appendChild(div);
+  if(idx>=0){var bv=document.getElementById("btn-vp");if(bv)bv.addEventListener("click",function(){abrirVisita(idx,"rota");div.remove();});}
+  var bi=document.getElementById("btn-ip");if(bi)bi.addEventListener("click",function(){div.remove();});
+  setTimeout(function(){if(div.parentNode)div.remove();},15000);
+}
+
+function getRotaOrdenada(){
+  recalc();
+  var max = VD.vendedor.maxRota || 15;
+  var chaves = [], comuns = [];
+
+  for(var i=0;i<VD.clientes.length;i++){
+    var c = VD.clientes[i];
+    if(!c.naRota) continue;
+    var dist = null;
+    if(VD.locVendedor && c.lat && c.lng)
+      dist = distKm(VD.locVendedor.lat, VD.locVendedor.lng, parseFloat(c.lat), parseFloat(c.lng));
+    var obj = {c:c, i:i, id:c.id, dist:dist, stotal:c.score};
+    if(c.chave) chaves.push(obj);
+    else comuns.push(obj);
+  }
+
+  if(VD.locVendedor){
+    // COM GPS: nearest neighbor nos chaves primeiro, depois comuns
+    var latRef = VD.locVendedor.lat, lngRef = VD.locVendedor.lng;
+
+    // Ordenar chaves por nearest neighbor a partir do vendedor
+    var chavesOrdenados = rotaNearest(chaves.map(function(o){return o.c;}), latRef, lngRef);
+
+    // Ponto de referencia para comuns = ultimo chave da rota (ou posicao do vendedor)
+    var ultimoChave = chavesOrdenados.length > 0 ? chavesOrdenados[chavesOrdenados.length-1] : null;
+    var latComum = ultimoChave && ultimoChave.lat ? parseFloat(ultimoChave.lat) : latRef;
+    var lngComum = ultimoChave && ultimoChave.lng ? parseFloat(ultimoChave.lng) : lngRef;
+
+    // Ordenar comuns por nearest neighbor a partir do ultimo chave
+    var comunsOrdenados = rotaNearest(comuns.map(function(o){return o.c;}), latComum, lngComum);
+
+    // Combinar: chaves + comuns
+    var circuito = chavesOrdenados.concat(comunsOrdenados);
+
+    // Reconstruir com indices corretos
+    var resultado = [];
+    for(var r=0; r<circuito.length && resultado.length<max; r++){
+      var cc = circuito[r], idxR = -1;
+      for(var k=0;k<VD.clientes.length;k++){if(VD.clientes[k].id===cc.id){idxR=k;break;}}
+      resultado.push({c:cc, i:idxR, id:cc.id, dist:cc.distDoAnterior, stotal:cc.score});
+    }
+    return resultado;
+
+  } else {
+    // SEM GPS: chaves primeiro (por urgencia), depois comuns (por urgencia)
+    chaves.sort(function(a,b){ return urgenciaCiclo(b.c) - urgenciaCiclo(a.c); });
+    comuns.sort(function(a,b){ return urgenciaCiclo(b.c) - urgenciaCiclo(a.c); });
+    return chaves.concat(comuns).slice(0, max);
+  }
+}
+
+
+function renderRota(){
+  recalc();
+  var isSemanal=VD.vendedor.tipoRota==="semanal";
+  document.getElementById("r-titulo").textContent=isSemanal?"Rota semanal":"Rota do dia";
+  if(isSemanal){renderRotaSemanal();}else{renderRotaDiaria();}
+}
+
+function renderRotaDiaria(){
+  var rota=getRotaOrdenada();
+  var vis=0;
+  for(var i=0;i<rota.length;i++){var v=VD.visitas["id_"+rota[i].c.id];if(v&&v.visitou)vis++;}
+  var pot=rota.reduce(function(s,o){return s+o.c.val;},0);
+  var pct=rota.length>0?Math.round(vis/rota.length*100):0;
+  document.getElementById("r-sub").textContent=rota.length+" paradas hoje";
+  document.getElementById("r-count").textContent=rota.length;
+  document.getElementById("r-vis").textContent=vis;
+  document.getElementById("r-pot").textContent="R$"+Math.round(pot/1000)+"k";
+  document.getElementById("r-status").textContent=vis+" de "+rota.length+" visitados";
+  document.getElementById("r-prog").style.width=pct+"%";
+  renderMapa(rota);
+  var html="";
+  if(rota.length===0){
+    html='<div class="card card-green" style="text-align:center;padding:24px"><p style="font-size:28px;margin-bottom:8px">&#127881;</p><p style="font-size:15px;font-weight:500;color:#27500A">Nenhuma visita pendente!</p></div>';
+  } else {
+    for(var j=0;j<rota.length;j++)html+=cardParada(rota[j],j,rota.length,"rota");
+  }
+  document.getElementById("rota-lista").innerHTML=html;
+  renderBtnRotaMensal();
+}
+
+function getSemana(){
+  var d=new Date(),d2=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
+  var day=d2.getUTCDay()||7;d2.setUTCDate(d2.getUTCDate()+4-day);
+  var y=new Date(Date.UTC(d2.getUTCFullYear(),0,1));
+  return Math.ceil((((d2-y)/86400000)+1)/7)+"-"+d2.getUTCFullYear();
+}
+function diaHoje(){var d=new Date().getDay();return(d===0||d===6)?0:d-1;}
+
+function gerarRotaSemanal(){
+  recalc();
+  var todos=[], chavesS=[], comunsS=[];
+  for(var i=0;i<VD.clientes.length;i++){
+    if(!VD.clientes[i].naRota) continue;
+    if(VD.clientes[i].chave) chavesS.push(VD.clientes[i]);
+    else comunsS.push(VD.clientes[i]);
+  }
+  // Chaves primeiro, depois comuns
+  var todos = chavesS.concat(comunsS);
+  var max=VD.vendedor.maxRota||15;
+  todos=todos.slice(0,max);
+  var dias=[{dia:"Segunda",ids:[]},{dia:"Terca",ids:[]},{dia:"Quarta",ids:[]},{dia:"Quinta",ids:[]},{dia:"Sexta",ids:[]}];
+  if(todos.length===0){VD.rotaSemanal={semana:getSemana(),gerado:new Date().toISOString(),dias:dias};localStorage.setItem("v360_rs",JSON.stringify(VD.rotaSemanal));return;}
+  if(VD.locVendedor){
+    var circuito=rotaNearest(todos,VD.locVendedor.lat,VD.locVendedor.lng);
+    var porDia=Math.ceil(circuito.length/5);
+    for(var j=0;j<circuito.length;j++){var di=Math.min(Math.floor(j/porDia),4);dias[di].ids.push(circuito[j].id);}
+  } else {
+    todos.sort(function(a,b){return urgenciaCiclo(b)-urgenciaCiclo(a);});
+    var porDia2=Math.ceil(todos.length/5);
+    for(var k=0;k<todos.length;k++){var di2=Math.min(Math.floor(k/porDia2),4);dias[di2].ids.push(todos[k].id);}
+  }
+  VD.rotaSemanal={semana:getSemana(),gerado:new Date().toISOString(),dias:dias};
+  localStorage.setItem("v360_rs",JSON.stringify(VD.rotaSemanal));
+}
+
+function renderRotaSemanal(){
+  if(!VD.rotaSemanal||VD.rotaSemanal.semana!==getSemana())gerarRotaSemanal();
+  var dias=VD.rotaSemanal.dias,diaVer=VD.diaSemanaVer!==undefined?VD.diaSemanaVer:diaHoje();
+  var nomes=["Seg","Ter","Qua","Qui","Sex"],nomesL=["SEGUNDA","TERCA","QUARTA","QUINTA","SEXTA"];
+  var totalC=0,totalV=0;
+  for(var d=0;d<dias.length;d++){totalC+=dias[d].ids.length;for(var vi=0;vi<dias[d].ids.length;vi++){var vv0=VD.visitas["id_"+dias[d].ids[vi]];if(vv0&&vv0.visitou)totalV++;}}
+  document.getElementById("r-sub").textContent="Seg a Sex - "+totalC+" clientes";
+  document.getElementById("r-count").textContent=totalC;
+  document.getElementById("r-vis").textContent=totalV;
+  document.getElementById("r-pot").textContent="-";
+  document.getElementById("r-status").textContent=totalV+" de "+totalC+" visitados";
+  document.getElementById("r-prog").style.width=totalC>0?Math.round(totalV/totalC*100)+"%":"0%";
+  var html="<div style='display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:14px'>";
+  for(var d2=0;d2<dias.length;d2++){
+    var isV=d2===diaVer,isH=d2===diaHoje(),okD=0;
+    for(var vi2=0;vi2<dias[d2].ids.length;vi2++){var vv2=VD.visitas["id_"+dias[d2].ids[vi2]];if(vv2&&vv2.visitou)okD++;}
+    var bg=isV?"#1a1a2e":"#f0f0f0",cor=isV?"#fff":"#333",corS=isV?"rgba(255,255,255,0.6)":"#888",brd=isH&&!isV?"border:2px solid #1a1a2e;":"";
+    html+="<div style='background:"+bg+";border-radius:10px;padding:8px 4px;text-align:center;cursor:pointer;"+brd+"' onclick='mostrarDia("+d2+")'>";
+    html+="<p style='font-size:9px;color:"+corS+";margin-bottom:2px'>"+nomes[d2]+(isH?"*":"")+"</p>";
+    html+="<p style='font-size:15px;font-weight:500;color:"+cor+"'>"+dias[d2].ids.length+"</p>";
+    html+="<p style='font-size:9px;color:"+corS+"'>"+okD+" ok</p></div>";
+  }
+  html+="</div>";
+  var diaObj=dias[diaVer],visD=0;
+  for(var vi3=0;vi3<diaObj.ids.length;vi3++){var vv3=VD.visitas["id_"+diaObj.ids[vi3]];if(vv3&&vv3.visitou)visD++;}
+  html+="<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:10px'>";
+  html+="<span class='slabel' style='margin-bottom:0'>"+nomesL[diaVer]+(diaVer===diaHoje()?" - HOJE":"")+"</span>";
+  html+="<span style='font-size:11px;color:#1D9E75;font-weight:500'>"+visD+" de "+diaObj.ids.length+" visitados</span></div>";
+  if(diaObj.ids.length===0){
+    html+='<div class="card card-green" style="text-align:center;padding:20px"><p style="font-size:13px;color:#27500A">Sem visitas para este dia.</p></div>';
+  } else {
+    for(var j=0;j<diaObj.ids.length;j++){
+      var cid=diaObj.ids[j],cidx=-1;
+      for(var ci2=0;ci2<VD.clientes.length;ci2++){if(VD.clientes[ci2].id===cid){cidx=ci2;break;}}
+      if(cidx<0)continue;
+      html+=cardParada({c:VD.clientes[cidx],i:cidx,id:cid,dist:null,stotal:VD.clientes[cidx].score},j,diaObj.ids.length,"rota");
+    }
+  }
+  var idsNaRota=[];
+  for(var ds=0;ds<dias.length;ds++)for(var cs=0;cs<dias[ds].ids.length;cs++)idsNaRota.push(dias[ds].ids[cs]);
+  var urgentes=VD.clientes.filter(function(c){return c.status==="urgente"&&idsNaRota.indexOf(c.id)<0;});
+  if(urgentes.length>0){
+    html+='<div class="card card-red" style="margin-top:14px"><p style="font-size:11px;font-weight:500;color:#A32D2D;margin-bottom:8px">URGENTES FORA DA ROTA ('+urgentes.length+')</p>';
+    for(var u=0;u<Math.min(3,urgentes.length);u++)html+='<div style="padding:6px 0;border-bottom:0.5px solid #F7C1C1"><p style="font-size:12px;font-weight:500;color:#A32D2D">'+urgentes[u].nome+'</p><p style="font-size:11px;color:#791F1F">'+urgentes[u].cidade+' - '+urgentes[u].dias+' dias - Score '+urgentes[u].score+'</p></div>';
+    html+='</div>';
+  }
+  var geradoEm=new Date(VD.rotaSemanal.gerado).toLocaleDateString("pt-BR");
+  html+='<div style="text-align:center;padding:12px 0 4px"><p style="font-size:11px;color:#888;margin-bottom:8px">Gerada em: '+geradoEm+'</p>';
+  html+='<button onclick="regenerarRota()" style="padding:8px 20px;border-radius:20px;border:0.5px solid #1a1a2e;background:transparent;color:#1a1a2e;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit">Regenerar rota</button></div>';
+  document.getElementById("rota-lista").innerHTML=html;
+  renderBtnRotaMensal();
+}
+
+function mostrarDia(idx){VD.diaSemanaVer=idx;renderRota();}
+function regenerarRota(){if(confirm("Regenerar o planejamento da semana?")){VD.rotaSemanal=null;localStorage.removeItem("v360_rs");VD.diaSemanaVer=diaHoje();toast("Rota regenerada!");renderRota();}}
+
+function cardParada(obj,j,total,origem){
+  var c=obj.c,vv=VD.visitas["id_"+c.id],ok=vv&&vv.visitou;
+  var org=origem||"rota";
+  var uid="cpb"+c.id.toString().replace(/-/g,"").slice(0,8)+j;
+  var html='<div class="rota-stop'+(ok?" feito":"")+'"><div class="rnum '+(ok?"rnum-ok":"rnum-p")+'">'+(ok?"&#10003;":(j+1))+"</div>";
+  html+='<div style="flex:1"><div style="display:flex;justify-content:space-between;align-items:flex-start">';
+  html+='<div><p style="font-size:14px;font-weight:500;color:#111">'+c.nome+"</p>";
+  var dtxt=obj.dist?" - "+obj.dist.toFixed(1)+" km":"";
+  html+='<p style="font-size:11px;color:#888;margin:2px 0">'+c.cidade+dtxt+" - "+c.dias+" dias</p>";
+  html+=chipHtml(c)+"</div>";
+  html+='<div class="score-sm '+corSc(c.status)+'" style="margin-top:2px">'+c.score+"</div></div>";
+  html+='<div style="display:flex;gap:8px;margin-top:10px">';
+  if(ok){
+    html+='<div style="flex:1;padding:9px;border-radius:10px;background:#EAF3DE;text-align:center;font-size:12px;font-weight:500;color:#27500A">'+(vv.vendeu?"Vendeu R$"+vv.valor.toLocaleString("pt-BR"):"Visitado")+"</div>";
+    html+='<button id="'+uid+'e" style="padding:9px 14px;border-radius:10px;border:0.5px solid #ddd;background:#f5f5f7;color:#666;font-size:12px;cursor:pointer;font-family:inherit">Editar</button>';
+  } else {
+    html+='<button id="'+uid+'r" style="flex:1;padding:9px;border-radius:10px;border:none;background:#1a1a2e;color:#fff;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit">Registrar visita</button>';
+  }
+  html+="</div></div></div>";
+  if(j<total-1)html+='<div class="connector"></div>';
+  var idxC=obj.i,orgC=org;
+  setTimeout(function(){
+    var be=document.getElementById(uid+"e");if(be)be.addEventListener("click",function(){abrirVisita(idxC,orgC);});
+    var br=document.getElementById(uid+"r");if(br)br.addEventListener("click",function(){abrirVisita(idxC,orgC);});
+  },0);
+  return html;
+}
+
+function renderMapa(rota){
+  var comGPS=rota.filter(function(o){return o.c.lat&&o.c.lng;});
+  var ph=document.getElementById("mapa-ph");
+  if(comGPS.length===0){if(ph)ph.style.display="flex";var ifr=document.getElementById("mapa-iframe");if(ifr)ifr.style.display="none";return;}
+  if(ph)ph.style.display="none";
+  var url="https://maps.google.com/maps?q="+comGPS[0].c.lat+","+comGPS[0].c.lng+"&t=m&z=10&output=embed";
+  var iframe=document.getElementById("mapa-iframe");
+  if(!iframe){iframe=document.createElement("iframe");iframe.id="mapa-iframe";iframe.style.cssText="width:100%;height:100%;border:none;display:block";document.getElementById("mapa-container").appendChild(iframe);}
+  iframe.src=url;iframe.style.display="block";
+}
+
+function abrirMapaExterno(){
+  var rota=getRotaOrdenada().slice(0,10),url="https://www.google.com/maps/dir/";
+  if(VD.locVendedor)url+=VD.locVendedor.lat+","+VD.locVendedor.lng+"/";
+  for(var i=0;i<rota.length;i++){if(rota[i].c.lat&&rota[i].c.lng)url+=rota[i].c.lat+","+rota[i].c.lng+"/";else url+=encodeURIComponent(rota[i].c.cidade+",CE,Brasil")+"/";}
+  window.open(url.replace(/\/$/,""),"_blank");
+}
+
+function renderAlertas(){
+  recalc();
+  var naoVendeu=function(c){var v=VD.visitas["id_"+c.id];return!(v&&v.visitou&&v.vendeu);};
+  var ur=VD.clientes.filter(function(c){return c.status==="urgente"&&naoVendeu(c);});
+  var at=VD.clientes.filter(function(c){return c.status==="atencao"&&naoVendeu(c);});
+  var hoje=new Date(),aniv=VD.clientes.filter(function(c){if(!c.aniv)return false;var a=new Date(c.aniv);return a.getMonth()===hoje.getMonth()&&a.getDate()===hoje.getDate();});
+  document.getElementById("al-sub").textContent=(ur.length+at.length+aniv.length)+" alertas";
+  var html="";
+  if(ur.length>0){
+    html+='<span class="slabel" style="margin-top:4px">URGENTE - VISITAR HOJE</span>';
+    for(var i=0;i<ur.length;i++){
+      var idx=VD.clientes.indexOf(ur[i]);
+      html+='<div class="alrow"><div style="width:36px;height:36px;border-radius:10px;background:#FCEBEB;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#A32D2D;flex-shrink:0">!</div>';
+      html+='<div style="flex:1"><p style="font-size:13px;font-weight:500;color:#111">'+ur[i].nome+'</p><p style="font-size:12px;color:#666;margin:4px 0;line-height:1.5">'+ur[i].dias+' dias sem comprar. Ciclo: '+ur[i].ciclo+' dias.</p><span class="chip chip-r">Score '+ur[i].score+'</span></div>';
+      html+='<button id="avbtn-'+idx+'" data-org="alertas" style="padding:8px 12px;border-radius:10px;border:none;background:#A32D2D;color:#fff;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;margin-left:8px;flex-shrink:0">Visitar</button></div>';
+    }
+  }
+  if(aniv.length>0){
+    html+='<span class="slabel" style="margin-top:14px">ANIVERSARIO HOJE</span>';
+    for(var j=0;j<aniv.length;j++)html+='<div class="alrow"><div style="width:36px;height:36px;border-radius:10px;background:#FAEEDA;display:flex;align-items:center;justify-content:center;font-size:18px;color:#854F0B;flex-shrink:0">&#9733;</div><div style="flex:1"><p style="font-size:13px;font-weight:500;color:#111">'+aniv[j].nome+'</p><p style="font-size:12px;color:#666;margin:4px 0">Aniversario hoje.</p><span class="chip chip-a">Parabenizar</span></div></div>';
+  }
+  if(at.length>0){
+    html+='<span class="slabel" style="margin-top:14px">ATENCAO</span>';
+    for(var k=0;k<at.length;k++)html+='<div class="alrow"><div style="width:36px;height:36px;border-radius:10px;background:#EAF3DE;display:flex;align-items:center;justify-content:center;font-weight:700;color:#3B6D11;flex-shrink:0">~</div><div style="flex:1"><p style="font-size:13px;font-weight:500;color:#111">'+at[k].nome+'</p><p style="font-size:12px;color:#666;margin:4px 0;line-height:1.5">'+at[k].dias+' dias sem comprar.</p><span class="chip chip-g">Visitar em breve</span></div></div>';
+  }
+  if(ur.length+at.length+aniv.length===0)html='<div style="text-align:center;padding:40px 20px"><p style="font-size:14px;color:#888">Nenhum alerta no momento.</p></div>';
+  document.getElementById("al-lista").innerHTML=html;
+}
+
+function renderClientes(){
+  recalc();
+  var nr=0;
+  for(var i=0;i<VD.clientes.length;i++){if(VD.clientes[i].naRota)nr++;}
+  document.getElementById("cl-count").textContent=VD.clientes.length+" clientes | "+nr+" na rota hoje";
+  document.getElementById("av2").textContent=iniciais();
+  var busca=document.getElementById("busca");if(busca)busca.value="";
+  var r=document.getElementById("busca-resultado"),v=document.getElementById("busca-vazio"),a=document.getElementById("acoes-clientes");
+  if(r)r.style.display="none";if(v)v.style.display="none";if(a)a.style.display="block";
+}
+
+function buscarCliente(){
+  recalc();
+  var b=document.getElementById("busca")?document.getElementById("busca").value.trim().toLowerCase():"";
+  var res=document.getElementById("busca-resultado"),vaz=document.getElementById("busca-vazio"),ac=document.getElementById("acoes-clientes"),lb=document.getElementById("lista-busca");
+  if(b.length<2){res.style.display="none";vaz.style.display="none";ac.style.display="block";return;}
+  ac.style.display="none";
+  var enc=[];
+  for(var i=0;i<VD.clientes.length;i++){var c=VD.clientes[i];if(c.nome.toLowerCase().indexOf(b)>=0||c.cidade.toLowerCase().indexOf(b)>=0)enc.push({c:c,i:i});}
+  if(enc.length===0){res.style.display="none";vaz.style.display="block";return;}
+  vaz.style.display="none";res.style.display="block";
+  document.getElementById("busca-label").textContent=enc.length+" CLIENTE(S) ENCONTRADO(S)";
+  var html="";
+  for(var j=0;j<enc.length;j++){
+    var c=enc[j].c,idx=enc[j].i;
+    html+='<div class="clirow" onclick="abrirCliente('+idx+')">';
+    html+='<div class="score '+corSc(c.status)+'">'+c.score+'</div>';
+    html+='<div style="flex:1"><p style="font-size:14px;font-weight:500;color:#111">'+c.nome+'</p>';
+    html+='<p style="font-size:11px;color:#888;margin:3px 0">'+c.cidade+' - '+c.dias+' dias sem comprar</p>';
+    html+=chipHtml(c)+(c.naRota?'<span class="chip chip-b" style="margin-left:4px">Na rota</span>':"");
+    html+='</div><span style="color:#ccc;font-size:20px">&#8250;</span></div>';
+  }
+  lb.innerHTML=html;
+}
+function filtrarClientes(){buscarCliente();}
+
+function abrirCliente(idx){
+  var c=VD.clientes[idx],sc=document.getElementById("cp-sc");
+  sc.className="score "+corSc(c.status);sc.style.width="50px";sc.style.height="50px";sc.style.fontSize="16px";sc.textContent=c.score;
+  document.getElementById("cp-nome").textContent=c.nome;
+  document.getElementById("cp-cidade").textContent=c.cidade;
+  document.getElementById("cp-tel").textContent=c.tel||"-";
+  document.getElementById("cp-ult").textContent=c.dias+" dias atras";
+  document.getElementById("cp-val").textContent="R$"+c.val.toLocaleString("pt-BR");
+  document.getElementById("cp-ciclo").textContent=(c.ciclo||30)+" dias";
+  var falta=Math.max(0,(c.ciclo||30)-10-c.dias);
+  document.getElementById("cp-prox").textContent=falta>0?"Em "+falta+" dias":"Ja na rota";
+  document.getElementById("cp-rota-st").textContent=c.naRota?"Na rota hoje":"Aguardando ciclo";
+  document.getElementById("cp-chave").textContent=c.chave?"⭐ Sim":"Nao";
+  document.getElementById("cp-obs").textContent=c.obs||"-";
+  var vv=VD.visitas["id_"+c.id];
+  document.getElementById("cp-hist").textContent=vv?"Hoje: "+(vv.vendeu?"Vendeu R$"+vv.valor.toLocaleString("pt-BR"):"Nao vendeu"):"Nenhuma visita ainda.";
+  VD.clienteAtual = idx;
+  document.getElementById("cp-btn-v").onclick=function(){abrirVisita(idx,"cliente");};
+  ir("cliente");
+}
+
+function abrirEdicaoCliente(){
+  var idx = VD.clienteAtual;
+  var c = VD.clientes[idx];
+  if(!c) return;
+  document.getElementById("ec-nome").value = c.nome || "";
+  document.getElementById("ec-cidade").value = c.cidade || "";
+  document.getElementById("ec-tel").value = c.tel || "";
+  document.getElementById("ec-end").value = c.end || "";
+  document.getElementById("ec-ciclo").value = c.ciclo || 30;
+  document.getElementById("ec-val").value = c.val || 0;
+  document.getElementById("ec-obs").value = c.obs || "";
+  // Toggle chave
+  var cb = document.getElementById("ec-chave");
+  var tog = document.getElementById("ec-chave-tog");
+  var bolinha = tog ? tog.querySelector("span") : null;
+  cb.checked = c.chave || false;
+  if(tog) tog.style.background = cb.checked ? "#1a1a2e" : "#ccc";
+  if(bolinha) bolinha.style.transform = cb.checked ? "translateX(20px)" : "translateX(0)";
+  document.getElementById("m-edit-cliente").className = "modal-bg open";
+}
+
+function toggleChaveEdit(){
+  var cb = document.getElementById("ec-chave");
+  var tog = document.getElementById("ec-chave-tog");
+  var bolinha = tog ? tog.querySelector("span") : null;
+  cb.checked = !cb.checked;
+  if(tog) tog.style.background = cb.checked ? "#1a1a2e" : "#ccc";
+  if(bolinha) bolinha.style.transform = cb.checked ? "translateX(20px)" : "translateX(0)";
+}
+
+async function salvarEdicaoCliente(){
+  var idx = VD.clienteAtual;
+  var c = VD.clientes[idx];
+  if(!c) return;
+
+  // Atualizar dados locais
+  c.nome   = document.getElementById("ec-nome").value.trim() || c.nome;
+  c.cidade = document.getElementById("ec-cidade").value.trim() || c.cidade;
+  c.tel    = document.getElementById("ec-tel").value.trim();
+  c.end    = document.getElementById("ec-end").value.trim();
+  c.ciclo  = parseInt(document.getElementById("ec-ciclo").value) || c.ciclo;
+  c.val    = parseFloat(document.getElementById("ec-val").value) || c.val;
+  c.obs    = document.getElementById("ec-obs").value.trim();
+  c.chave  = document.getElementById("ec-chave").checked;
+
+  salvar();
+
+  // Salvar no banco
+  if(supaClient && vendedorDB){
+    var payload = {
+      nome:         c.nome,
+      cidade:       c.cidade,
+      telefone:     c.tel || null,
+      endereco:     c.end || null,
+      ciclo_dias:   c.ciclo,
+      valor_medio:  c.val,
+      observacoes:  c.obs || null,
+      cliente_chave: c.chave
+    };
+    var r = await supaClient.from("clientes").update(payload).eq("id", c.id);
+    if(r.error){
+      toast("Erro ao salvar. Tente novamente.");
+      return;
+    }
+  }
+
+  fecharModal("m-edit-cliente");
+  toast("Cadastro atualizado!");
+  // Atualizar a tela do cliente
+  abrirCliente(idx);
+}
+
+function renderAnalise(){
+  var meses=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"],hoje=new Date();
+  document.getElementById("a-data").textContent=hoje.getDate()+" de "+meses[hoje.getMonth()];
+  var vendido=0,vis=0,ped=0;
+  for(var k in VD.visitas){if(VD.visitas[k].visitou)vis++;if(VD.visitas[k].vendeu){ped++;vendido+=VD.visitas[k].valor;}}
+  var pct=VD.vendedor.md>0?Math.min(100,Math.round(vendido/VD.vendedor.md*100)):0;
+  document.getElementById("a-val").textContent="R$"+vendido.toLocaleString("pt-BR");
+  document.getElementById("a-vis").textContent=vis;
+  document.getElementById("a-ped").textContent=ped;
+  document.getElementById("a-conv").textContent=vis>0?Math.round(ped/vis*100)+"%":"-";
+  document.getElementById("a-mval").textContent="R$"+vendido.toLocaleString("pt-BR")+" / R$"+VD.vendedor.md.toLocaleString("pt-BR");
+  document.getElementById("a-mpct").textContent=pct+"%";
+  document.getElementById("a-mbar").style.width=pct+"%";
+  var box=document.getElementById("a-box"),tit=document.getElementById("a-titulo"),msg=document.getElementById("a-msg");
+  var diaDoMes=hoje.getDate(),diasNoMes=new Date(hoje.getFullYear(),hoje.getMonth()+1,0).getDate();
+  var diasRestantes=diasNoMes-diaDoMes;
+  var ticketMedio=ped>0?vendido/ped:0;
+  var vmes=(VD.vendedor.vmes||0)+vendido;
+  var faltaMeta=Math.max(0,VD.vendedor.mm-vmes);
+  var projecaoMes=vmes+(vendido*diasRestantes);
+  var pctProjecao=VD.vendedor.mm>0?Math.round(projecaoMes/VD.vendedor.mm*100):0;
+  var necessarioPorDia=diasRestantes>0?Math.ceil(faltaMeta/diasRestantes):faltaMeta;
+  var titulo,mensagem,classe;
+  if(vis===0&&ped===0){
+    classe="fb-box fb-blue";titulo="BOM DIA!";
+    mensagem="Voce tem "+VD.clientes.filter(function(c){return c.naRota;}).length+" visitas na rota de hoje. Meta do dia: R$"+VD.vendedor.md.toLocaleString("pt-BR")+". Vamos la!";
+  } else if(vendido>=VD.vendedor.md&&pctProjecao>=120){
+    classe="fb-box fb-green";titulo="META DO DIA BATIDA!";
+    mensagem="No ritmo de hoje voce vai fechar o mes em R$"+Math.round(projecaoMes).toLocaleString("pt-BR")+" — "+pctProjecao+"% da meta mensal. Que mes top!";
+  } else if(vmes>=VD.vendedor.mm){
+    classe="fb-box fb-green";titulo="META MENSAL ATINGIDA!";
+    mensagem="Voce ja bateu a meta do mes! Continue visitando para superar. Cada pedido extra e bonus no bolso.";
+  } else if(vendido>=VD.vendedor.md){
+    classe="fb-box fb-green";titulo="META DO DIA BATIDA!";
+    mensagem="Otimo dia! Faltam R$"+faltaMeta.toLocaleString("pt-BR")+" para a meta mensal."+(ticketMedio>0?" Com seu ticket medio voce precisa de mais "+Math.ceil(faltaMeta/ticketMedio)+" pedido(s) ate o fim do mes.":"");
+  } else if(pct>=70){
+    classe="fb-box fb-amber";titulo="QUASE LA!";
+    mensagem="Voce esta em "+pct+"% da meta do dia. Faltam R$"+(VD.vendedor.md-vendido).toLocaleString("pt-BR")+(ticketMedio>0?" — equivale a "+Math.ceil((VD.vendedor.md-vendido)/ticketMedio)+" pedido(s) no seu ticket medio.":".");
+  } else if(ped>0){
+    classe="fb-box fb-blue";titulo="EM ANDAMENTO";
+    mensagem="Voce vendeu R$"+vendido.toLocaleString("pt-BR")+" com "+ped+" pedido(s). Para bater a meta mensal, precisa de R$"+necessarioPorDia.toLocaleString("pt-BR")+" por dia nos proximos "+diasRestantes+" dias.";
+  } else if(vis>0){
+    classe="fb-box fb-amber";titulo="VISITAS SEM PEDIDOS";
+    mensagem=vis+" visita(s) mas nenhum pedido ainda. Foco nos proximos clientes — meta do dia: R$"+VD.vendedor.md.toLocaleString("pt-BR")+".";
+  } else {
+    classe="fb-box fb-blue";titulo="COMECE O DIA";
+    mensagem="Nenhuma visita registrada ainda. Meta do dia: R$"+VD.vendedor.md.toLocaleString("pt-BR")+".";
+  }
+  box.className=classe;
+  if(classe.indexOf("green")>=0){tit.style.color="#3B6D11";msg.style.color="#27500A";}
+  else if(classe.indexOf("amber")>=0){tit.style.color="#854F0B";msg.style.color="#633806";}
+  else{tit.style.color="#185FA5";msg.style.color="#0C447C";}
+  tit.textContent=titulo;msg.textContent=mensagem;
+  recalc();
+  var pend=[];
+  for(var i=0;i<VD.clientes.length;i++){if(VD.clientes[i].naRota){var vvp=VD.visitas["id_"+VD.clientes[i].id];if(!vvp||!vvp.visitou)pend.push(VD.clientes[i]);}}
+  var am=document.getElementById("a-amanha");am.style.display=vis>0?"block":"none";
+  if(vis>0)document.getElementById("a-amtxt").textContent=pend.length>0?"Amanha priorize: "+pend.slice(0,2).map(function(c){return c.nome;}).join(", ")+"...":"Todos visitados hoje! Amanha verifique novos ciclos.";
+}
+
+function renderPerfil(){
+  recalc();
+  var nr=0;for(var i=0;i<VD.clientes.length;i++){if(VD.clientes[i].naRota)nr++;}
+  document.getElementById("pf-av").textContent=iniciais();
+  document.getElementById("pf-nome").textContent=VD.vendedor.nome;
+  document.getElementById("pf-cargo").textContent=VD.vendedor.empresa||"Representante Comercial";
+  document.getElementById("pf-md").textContent="R$"+VD.vendedor.md.toLocaleString("pt-BR");
+  document.getElementById("pf-mm").textContent="R$"+VD.vendedor.mm.toLocaleString("pt-BR");
+  document.getElementById("pf-nc").textContent=VD.clientes.length;
+  document.getElementById("pf-nr").textContent=nr;
+  document.getElementById("ed-nome").value=VD.vendedor.nome||"";
+  document.getElementById("ed-emp").value=VD.vendedor.empresa||"";
+  document.getElementById("ed-tel").value=VD.vendedor.tel||"";
+  document.getElementById("ed-md").value=VD.vendedor.md||2000;
+  document.getElementById("ed-mm").value=VD.vendedor.mm||40000;
+  document.getElementById("ed-vmes").value=VD.vendedor.vmes||0;
+  document.getElementById("ed-maxrota").value=VD.vendedor.maxRota||15;
+  var isSemanal=VD.vendedor.tipoRota==="semanal";
+  document.getElementById("tr-diaria").className="tog"+(isSemanal?"":" sel");
+  document.getElementById("tr-semanal").className="tog"+(isSemanal?" sel":"");
+  document.getElementById("info-rota-diaria").style.display=isSemanal?"none":"block";
+  document.getElementById("info-rota-semanal").style.display=isSemanal?"block":"none";
+}
+
+function selTipoRota(t){
+  document.getElementById("tr-diaria").className="tog"+(t==="diaria"?" sel":"");
+  document.getElementById("tr-semanal").className="tog"+(t==="semanal"?" sel":"");
+  document.getElementById("info-rota-diaria").style.display=t==="diaria"?"block":"none";
+  document.getElementById("info-rota-semanal").style.display=t==="semanal"?"block":"none";
+}
+
+function salvarPerfil(){
+  VD.vendedor.nome=document.getElementById("ed-nome").value||VD.vendedor.nome;
+  VD.vendedor.empresa=document.getElementById("ed-emp").value;
+  VD.vendedor.tel=document.getElementById("ed-tel").value;
+  VD.vendedor.md=parseFloat(document.getElementById("ed-md").value)||2000;
+  VD.vendedor.mm=parseFloat(document.getElementById("ed-mm").value)||40000;
+  VD.vendedor.vmes=parseFloat(document.getElementById("ed-vmes").value)||0;
+  VD.vendedor.maxRota=parseInt(document.getElementById("ed-maxrota").value)||15;
+  VD.vendedor.tipoRota=document.getElementById("tr-semanal").className.indexOf("sel")>=0?"semanal":"diaria";
+  salvar();
+  if(supaClient&&vendedorDB)salvarPerfilDB();
+  renderPerfil();toast("Perfil salvo!");
+}
+
+function limparDados(){if(confirm("Apagar todos os dados?")){localStorage.clear();location.reload();}}
+function sair(){if(confirm("Sair da conta?")){fazerLogout();}}
+
+function abrirVisita(idx,origem){
+  VD.clienteAtual=idx;VD.origemVisita=origem||"home";
+  var c=VD.clientes[idx];
+  document.getElementById("v-nome").textContent=c.nome;
+  document.getElementById("v-info").textContent=c.dias+" dias sem comprar - R$"+c.val.toLocaleString("pt-BR")+" medio";
+  document.getElementById("v-valor").value="";
+  document.getElementById("v-ciclo").value=c.ciclo||30;
+  document.getElementById("v-ciclo-atual").textContent=(c.ciclo||30)+"d";
+  document.getElementById("v-motivo").value="";
+  document.getElementById("v-obs").value="";
+  document.getElementById("vis-s").className="tog sel";document.getElementById("vis-n").className="tog";
+  document.getElementById("vnd-s").className="tog sel";document.getElementById("vnd-n").className="tog";
+  document.getElementById("v-back").onclick=function(){ir(VD.origemVisita);};
+  document.getElementById("v-cancel").onclick=function(){ir(VD.origemVisita);};
+  ir("visita");
+}
+
+function selVis(s){document.getElementById("vis-s").className="tog"+(s?" sel":"");document.getElementById("vis-n").className="tog"+(!s?" sel":"");}
+function selVnd(s){document.getElementById("vnd-s").className="tog"+(s?" sel":"");document.getElementById("vnd-n").className="tog"+(!s?" sel":"");}
+
+async function salvarVisita(){
+  var visitou=document.getElementById("vis-s").className.indexOf("sel")>=0;
+  var vendeu=document.getElementById("vnd-s").className.indexOf("sel")>=0;
+  var val=parseFloat(document.getElementById("v-valor").value)||0;
+  var novoCiclo=parseInt(document.getElementById("v-ciclo").value)||VD.clientes[VD.clienteAtual].ciclo;
+  VD.clientes[VD.clienteAtual].ciclo=novoCiclo;
+  VD.visitas["id_"+VD.clientes[VD.clienteAtual].id]={visitou:visitou,vendeu:vendeu,valor:val,motivo:document.getElementById("v-motivo").value,obs:document.getElementById("v-obs").value};
+  if(vendeu&&val>0){var h=new Date();VD.clientes[VD.clienteAtual].ult=h.getFullYear()+"-"+String(h.getMonth()+1).padStart(2,"0")+"-"+String(h.getDate()).padStart(2,"0");}
+  salvar();
+  if(supaClient&&vendedorDB){var cId=VD.clientes[VD.clienteAtual].id;var dados=VD.visitas["id_"+cId];salvarVisitaDB(cId,dados).catch(function(e){console.error("Erro salvar visita:",e);});}
+  toast("Visita salva!");ir(VD.origemVisita);
+}
+
+function toggleChave(){
+  var cb=document.getElementById("nc-chave");
+  var tog=document.getElementById("nc-chave-tog");
+  var bolinha=tog.querySelector("span");
+  cb.checked=!cb.checked;
+  tog.style.background=cb.checked?"#1a1a2e":"#ccc";
+  if(bolinha)bolinha.style.transform=cb.checked?"translateX(20px)":"translateX(0)";
+}
+
+function abrirModalNC(){
+  ["nc-nome","nc-cidade","nc-tel","nc-end","nc-obs"].forEach(function(id){document.getElementById(id).value="";});
+  ["nc-ult","nc-aniv","nc-lat","nc-lng","nc-val","nc-ciclo"].forEach(function(id){document.getElementById(id).value="";});
+  // Reset toggle cliente chave
+  var cb=document.getElementById("nc-chave"),tog=document.getElementById("nc-chave-tog");
+  if(cb){cb.checked=false;}
+  if(tog){tog.style.background="#ccc";var b=tog.querySelector("span");if(b)b.style.transform="translateX(0)";}
+  document.getElementById("gps-ok").style.display="none";
+  document.getElementById("btn-gps").textContent="GPS";document.getElementById("btn-gps").style.background="#1a1a2e";
+  document.getElementById("m-nc").className="modal-bg open";
+}
+
+async function salvarNC(){
+  var nome=document.getElementById("nc-nome").value.trim(),cidade=document.getElementById("nc-cidade").value.trim();
+  if(!nome){toast("Preencha o nome.");return;}
+  if(!cidade){toast("Preencha a cidade.");return;}
+  var novoCliente={
+    id:"local-"+Date.now(),
+    chave:document.getElementById("nc-chave")&&document.getElementById("nc-chave").checked,
+    nome:nome, cidade:cidade,
+    tel:document.getElementById("nc-tel").value,
+    end:document.getElementById("nc-end").value,
+    ult:document.getElementById("nc-ult").value,
+    val:parseFloat(document.getElementById("nc-val").value)||0,
+    ciclo:parseInt(document.getElementById("nc-ciclo").value)||30,
+    aniv:document.getElementById("nc-aniv").value,
+    obs:document.getElementById("nc-obs").value,
+    lat:document.getElementById("nc-lat").value||null,
+    lng:document.getElementById("nc-lng").value||null,
+    score:0, status:"", dias:0, naRota:false
+  };
+  VD.clientes.push(novoCliente);
+  fecharModal("m-nc");
+  if(supaClient && vendedorDB){
+    toast("Salvando "+nome+"...");
+    var ok = await salvarClienteDB(novoCliente).catch(function(){return null;});
+    salvar(); // salvar com UUID do banco
+    toast(ok ? nome+" salvo!" : nome+" salvo localmente.");
+  } else {
+    salvar();
+    toast(nome+" adicionado!");
+  }
+  ir("clientes");
+}
+
+
+function capturarGPS(){
+  var btn=document.getElementById("btn-gps");btn.textContent="...";btn.style.background="#854F0B";
+  if(!navigator.geolocation){toast("GPS nao disponivel.");btn.textContent="GPS";btn.style.background="#1a1a2e";return;}
+  navigator.geolocation.getCurrentPosition(
+    function(pos){var lat=pos.coords.latitude.toFixed(6),lng=pos.coords.longitude.toFixed(6);document.getElementById("nc-lat").value=lat;document.getElementById("nc-lng").value=lng;document.getElementById("gps-coords").textContent="Lat:"+lat+" Lng:"+lng;document.getElementById("gps-link").href="https://www.google.com/maps?q="+lat+","+lng;document.getElementById("gps-ok").style.display="flex";if(!document.getElementById("nc-end").value)document.getElementById("nc-end").value="GPS capturado";btn.textContent="OK";btn.style.background="#27500A";toast("GPS capturado!");},
+    function(){toast("Erro ao capturar GPS.");btn.textContent="GPS";btn.style.background="#1a1a2e";},
+    {enableHighAccuracy:true,timeout:10000}
+  );
+}
+
+function abrirModalImp(){document.getElementById("imp-status").style.display="none";document.getElementById("m-imp").className="modal-bg open";}
+
+function importarCSV(input){importarPlanilha(input);}
+
+function importarPlanilha(input){
+  var file=input.files[0];if(!file)return;
+  var st=document.getElementById("imp-status"),mg=document.getElementById("imp-msg");
+  st.style.display="block";mg.textContent="Lendo arquivo...";
+  var ext=file.name.split(".").pop().toLowerCase();
+  if(ext==="csv"){var reader=new FileReader();reader.onload=function(e){processarCSV(e.target.result);};reader.readAsText(file,"UTF-8");return;}
+  if(typeof XLSX==="undefined"){
+    mg.textContent="Carregando leitor Excel...";
+    var script=document.createElement("script");
+    script.src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+    script.onload=function(){var r=new FileReader();r.onload=function(e){processarXLSX(e.target.result);};r.readAsArrayBuffer(file);};
+    document.head.appendChild(script);
+  } else {
+    var r2=new FileReader();r2.onload=function(e){processarXLSX(e.target.result);};r2.readAsArrayBuffer(file);
+  }
+}
+
+function processarXLSX(buffer){
+  var mg=document.getElementById("imp-msg");
+  try{
+    var wb=XLSX.read(buffer,{type:"array"});
+    var ws=wb.Sheets[wb.SheetNames[0]];
+    var data=XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
+    var cabIdx=2;
+    for(var i=0;i<data.length;i++){var row=data[i];for(var j=0;j<row.length;j++){if(typeof row[j]==="string"&&row[j].toLowerCase().indexOf("nome")>=0){cabIdx=i;break;}}if(cabIdx===i)break;}
+    var imp=0,maxId=0;
+    for(var k=0;k<VD.clientes.length;k++)if((VD.clientes[k].id||0)>maxId)maxId=VD.clientes[k].id;
+    for(var r=cabIdx+2;r<data.length;r++){
+      var row=data[r];if(!row||!row[0])continue;
+      var nome=String(row[0]||"").trim();
+      if(!nome||nome.indexOf("EXEMPLO")>=0||nome.indexOf("→")>=0)continue;
+      VD.clientes.push({id:++maxId,nome:nome,cidade:String(row[1]||""),tel:String(row[2]||""),end:String(row[3]||""),ult:String(row[4]||""),val:parseFloat(row[5])||0,ciclo:parseInt(row[6])||30,aniv:String(row[7]||""),canal:String(row[8]||""),obs:String(row[9]||""),lat:null,lng:null,score:0,status:"",dias:0,naRota:false});
+      imp++;
+    }
+    salvar();
+    mg.textContent=imp+" cliente(s) importado(s)!";
+    if(supaClient&&vendedorDB){var novos=VD.clientes.slice(VD.clientes.length-imp);importarClientesDB(novos);}
+    setTimeout(function(){fecharModal("m-imp");ir("clientes");},1800);
+  }catch(err){mg.textContent="Erro: "+err.message;}
+}
+
+function processarCSV(texto){
+  var lines=texto.split("\n").filter(function(l){return l.trim();});
+  if(lines.length<2){document.getElementById("imp-msg").textContent="Arquivo vazio.";return;}
+  var cab=lines[0].split(",").map(function(h){return h.trim().toLowerCase().replace(/"/g,"");});
+  var imp=0,maxId=0;
+  for(var i=0;i<VD.clientes.length;i++)if((VD.clientes[i].id||0)>maxId)maxId=VD.clientes[i].id;
+  for(var j=1;j<lines.length;j++){
+    var cols=lines[j].split(",").map(function(c){return c.trim().replace(/"/g,"");});
+    var obj={};for(var x=0;x<cab.length;x++)obj[cab[x]]=cols[x]||"";
+    if(!obj.nome)continue;
+    VD.clientes.push({id:++maxId,nome:obj.nome,cidade:obj.cidade||"",tel:obj.telefone||"",end:obj.endereco||"",ult:obj.ultima_compra||"",val:parseFloat(obj.valor_medio||0)||0,ciclo:parseInt(obj.ciclo_dias||30)||30,aniv:obj.aniversario||"",obs:obj.observacoes||"",lat:null,lng:null,score:0,status:"",dias:0,naRota:false});
+    imp++;
+  }
+  salvar();
+  document.getElementById("imp-msg").textContent=imp+" cliente(s) importado(s)!";
+  setTimeout(function(){fecharModal("m-imp");ir("clientes");},1500);
+}
+
+function baixarModelo(){
+  var link=document.createElement("a");link.href="clientes_vendas360.xlsx";link.download="clientes_vendas360.xlsx";link.click();toast("Baixando planilha modelo...");
+}
+
+function fecharModal(id){document.getElementById(id).className="modal-bg";}
+function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(function(){t.style.display="none";},2500);}
+
+var _m=document.querySelectorAll(".modal-bg");
+for(var _mi=0;_mi<_m.length;_mi++){_m[_mi].addEventListener("click",function(e){if(e.target===this)fecharModal(this.id);});}
+
+
+// ── ESTADO DA AGENDA ────────────────────────────────────────────────
+var AG = {
+  mes: new Date().getMonth() + 1,
+  ano: new Date().getFullYear(),
+  agendamentos: {},
+  clienteAtual: null
+};
+
+var MESES = ["Janeiro","Fevereiro","Marco","Abril","Maio","Junho",
+             "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+
+function irAgenda(){ir("agenda");}
+
+function ir(pg){
+  // Fechar calendário mensal se estiver aberto
+  var cal = document.getElementById("pg-cal-mes");
+  if(cal) { cal.style.display = "none"; cal.className = "screen"; }
+  var telas=["home","rota","alertas","clientes","analise","cliente","visita","perfil","agenda"];
+  for(var i=0;i<telas.length;i++){var el=document.getElementById("pg-"+telas[i]);if(el)el.className="screen"+(telas[i]===pg?" ativo":"");}
+  var tabs=["home","rota","alertas","clientes","analise","agenda"];
+  for(var j=0;j<tabs.length;j++){var t=document.getElementById("tab-"+tabs[j]);if(t)t.className="tab"+(tabs[j]===pg?" on":"");}
+  var el2=document.getElementById("pg-"+pg);if(el2)el2.scrollTop=0;
+  if(pg==="home")renderHome();
+  if(pg==="rota")renderRota();
+  if(pg==="alertas")renderAlertas();
+  if(pg==="clientes")renderClientes();
+  if(pg==="analise")renderAnalise();
+  if(pg==="perfil")renderPerfil();
+  if(pg==="agenda")renderAgenda();
+}
+
+function mudarMes(delta){
+  AG.mes += delta;
+  if(AG.mes > 12){AG.mes = 1; AG.ano++;}
+  if(AG.mes < 1){AG.mes = 12; AG.ano--;}
+  renderAgenda();
+}
+
+async function renderAgenda(){
+  recalc();
+  document.getElementById("ag-mes-label").textContent = MESES[AG.mes-1] + " " + AG.ano;
+  if(supaClient && vendedorDB){
+    var r = await supaClient.from("agendamentos")
+      .select("*").eq("mes", AG.mes).eq("ano", AG.ano);
+    if(r.data){
+      AG.agendamentos = {};
+      r.data.forEach(function(a){ AG.agendamentos[a.cliente_id] = a; });
+    }
+  }
+  var chaves = VD.clientes.filter(function(c){ return c.chave; });
+  var confirmados = chaves.filter(function(c){ return AG.agendamentos[c.id] && AG.agendamentos[c.id].confirmado; });
+  var pendentes = chaves.filter(function(c){ return !AG.agendamentos[c.id] || !AG.agendamentos[c.id].confirmado; });
+  document.getElementById("ag-total").textContent = chaves.length;
+  document.getElementById("ag-confirm").textContent = confirmados.length;
+  document.getElementById("ag-pend").textContent = pendentes.length;
+  document.getElementById("ag-sub").textContent = chaves.length + " clientes chave";
+
+  var semTel = chaves.filter(function(c){ return !c.tel; });
+  var avisoEl = document.getElementById("ag-sem-tel");
+  if(avisoEl){
+    if(semTel.length > 0){
+      avisoEl.style.display = "block";
+      avisoEl.textContent = semTel.length + " chave(s) sem telefone — toque em Tel para cadastrar";
+    } else {
+      avisoEl.style.display = "none";
+    }
+  }
+
+  var pendComTel = pendentes.filter(function(c){ return c.tel; });
+  document.getElementById("btn-wpp-todos").style.display = pendComTel.length > 0 ? "flex" : "none";
+
+  var html = "";
+  if(chaves.length === 0){
+    html = '<div class="card" style="text-align:center;padding:24px"><p style="font-size:14px;color:#888">Nenhum cliente chave cadastrado.</p><p style="font-size:12px;color:#aaa;margin-top:6px">Marque clientes como chave no cadastro.</p></div>';
+  } else {
+    var ordenados = confirmados.concat(pendentes);
+    for(var i=0; i<ordenados.length; i++){
+      var c = ordenados[i];
+      var ag = AG.agendamentos[c.id];
+      var isConf = ag && ag.confirmado;
+      var temData = ag && ag.dia_agendado;
+      html += '<div class="card" style="margin-bottom:8px">';
+      html += '<div style="display:flex;gap:12px;align-items:flex-start">';
+      html += '<div style="width:40px;height:40px;border-radius:10px;background:'+(isConf?"#EAF3DE":"#f0f0f0")+';display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+(isConf?"&#10003;":"&#128197;")+'</div>';
+      html += '<div style="flex:1">';
+      html += '<p style="font-size:14px;font-weight:500;color:#111;margin:0">'+c.nome+'</p>';
+      html += '<p style="font-size:11px;color:#888;margin:3px 0">'+( c.cidade||"")+(c.tel?" · "+c.tel:"")+'</p>';
+      if(temData){
+        var d = new Date(ag.dia_agendado + "T12:00:00");
+        var periodoTxt = ag.periodo==="manha"?"Manha":ag.periodo==="tarde"?"Tarde":"Dia todo";
+        html += '<span class="chip '+(isConf?"chip-g":"chip-a")+'">'+d.getDate()+"/"+(d.getMonth()+1)+" - "+periodoTxt+'</span>';
+      } else {
+        html += '<span class="chip" style="background:#f0f0f0;color:#888">Sem data definida</span>';
+      }
+      if(ag && ag.observacoes) html += '<p style="font-size:11px;color:#666;margin:4px 0 0;font-style:italic">'+ag.observacoes+'</p>';
+      html += '</div></div>';
+      html += '<div style="display:flex;gap:8px;margin-top:10px">';
+      html += '<button id="ag-btn-'+i+'" style="flex:1;padding:8px;border-radius:8px;border:0.5px solid #1a1a2e;background:transparent;color:#1a1a2e;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit">Agendar</button>';
+      if(c.tel){
+        html += '<button id="wpp-btn-'+i+'" style="width:40px;height:36px;border-radius:8px;border:none;background:#25D366;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">&#128172;</button>';
+      } else {
+        html += '<button id="tel-btn-'+i+'" style="width:40px;height:36px;border-radius:8px;border:0.5px solid #e0e0e0;background:#f5f5f7;color:#888;font-size:11px;cursor:pointer;font-family:inherit">Tel</button>';
+      }
+      html += '</div></div>';
+    }
+  }
+  document.getElementById("ag-lista").innerHTML = html;
+
+  var ordenados2 = confirmados.concat(pendentes);
+  setTimeout(function(){
+    for(var i=0; i<ordenados2.length; i++){
+      (function(idx, cliente){
+        var btnAg = document.getElementById("ag-btn-"+idx);
+        if(btnAg) btnAg.addEventListener("click", function(){ abrirModalAgenda(cliente); });
+        var btnWpp = document.getElementById("wpp-btn-"+idx);
+        if(btnWpp) btnWpp.addEventListener("click", function(){ enviarWppCliente(cliente); });
+        var btnTel = document.getElementById("tel-btn-"+idx);
+        if(btnTel) btnTel.addEventListener("click", function(){ pedirTelefone(cliente); });
+      })(i, ordenados2[i]);
+    }
+  }, 0);
+}
+
+function abrirModalAgenda(cliente){
+  AG.clienteAtual = cliente;
+  document.getElementById("mag-nome").textContent = cliente.nome;
+  document.getElementById("mag-info").textContent = (cliente.cidade||"") + " · " + MESES[AG.mes-1] + " " + AG.ano;
+  var ag = AG.agendamentos[cliente.id];
+  var isConf = ag && ag.confirmado;
+  document.getElementById("mag-pend").className = "tog" + (!isConf?" sel":"");
+  document.getElementById("mag-conf").className = "tog" + (isConf?" sel":"");
+  document.getElementById("mag-data").value = ag && ag.dia_agendado ? ag.dia_agendado : "";
+  document.getElementById("mag-obs").value = ag && ag.observacoes ? ag.observacoes : "";
+  var semTelDiv = document.getElementById("mag-sem-tel");
+  var magTel = document.getElementById("mag-tel");
+  if(semTelDiv && magTel){
+    semTelDiv.style.display = cliente.tel ? "none" : "block";
+    magTel.value = cliente.tel || "";
+  }
+  document.getElementById("mag-wpp").style.display = "flex";
+  var periodo = ag ? ag.periodo : "dia_todo";
+  selPeriodo(periodo || "dia_todo");
+  document.getElementById("m-agenda").className = "modal-bg open";
+}
+
+function selConfirm(confirmado){
+  document.getElementById("mag-pend").className = "tog" + (!confirmado?" sel":"");
+  document.getElementById("mag-conf").className = "tog" + (confirmado?" sel":"");
+}
+
+function selPeriodo(p){
+  document.getElementById("per-m").className = "tog" + (p==="manha"?" sel":"");
+  document.getElementById("per-t").className = "tog" + (p==="tarde"?" sel":"");
+  document.getElementById("per-d").className = "tog" + (p==="dia_todo"?" sel":"");
+}
+
+async function salvarAgendamento(){
+  if(!AG.clienteAtual) return;
+  var confirmado = document.getElementById("mag-conf").className.indexOf("sel") >= 0;
+  var data = document.getElementById("mag-data").value || null;
+  var obs = document.getElementById("mag-obs").value;
+  var periodo = document.getElementById("per-m").className.indexOf("sel")>=0?"manha":
+                document.getElementById("per-t").className.indexOf("sel")>=0?"tarde":"dia_todo";
+  var ag = AG.agendamentos[AG.clienteAtual.id];
+  var payload = {
+    vendedor_id: vendedorDB.id,
+    cliente_id: AG.clienteAtual.id,
+    mes: AG.mes, ano: AG.ano,
+    dia_agendado: data,
+    periodo: periodo,
+    confirmado: confirmado,
+    observacoes: obs,
+    atualizado_em: new Date().toISOString()
+  };
+  if(supaClient && vendedorDB){
+    if(ag && ag.id){
+      await supaClient.from("agendamentos").update(payload).eq("id", ag.id);
+    } else {
+      var r = await supaClient.from("agendamentos").insert(payload).select("id").single();
+      if(r.data) payload.id = r.data.id;
+    }
+    AG.agendamentos[AG.clienteAtual.id] = payload;
+  }
+  fecharModal("m-agenda");
+  toast(confirmado ? "Visita confirmada!" : "Agendamento salvo!");
+  renderAgenda();
+}
+
+function gerarMsgWhatsApp(cliente, ag){
+  var vendedor = VD.vendedor.nome;
+  var mesNome = MESES[AG.mes-1];
+  var periodoTxt = "";
+  if(ag && ag.periodo === "manha") periodoTxt = " no periodo da manha";
+  else if(ag && ag.periodo === "tarde") periodoTxt = " no periodo da tarde";
+  var dataTxt = "";
+  if(ag && ag.dia_agendado){
+    var d = new Date(ag.dia_agendado + "T12:00:00");
+    dataTxt = " no dia " + d.getDate() + "/" + (d.getMonth()+1);
+  }
+  if(dataTxt){
+    return "Ola " + cliente.nome + ", tudo bem? Sou " + vendedor + " e gostaria de confirmar minha visita" + dataTxt + periodoTxt + ". Posso passar? Aguardo confirmacao!";
+  } else {
+    return "Ola " + cliente.nome + ", tudo bem? Sou " + vendedor + ". Estou planejando minhas visitas de " + mesNome + " e gostaria de agendar um dia para passar ai. Qual seria o melhor dia e horario para voce?";
+  }
+}
+
+function enviarWppCliente(cliente){
+  var ag = AG.agendamentos[cliente.id];
+  var msg = gerarMsgWhatsApp(cliente, ag);
+  var tel = cliente.tel.replace(/[^0-9]/g,"");
+  if(!tel.startsWith("55")) tel = "55" + tel;
+  var url = "https://wa.me/" + tel + "?text=" + encodeURIComponent(msg);
+  window.open(url, "_blank");
+  if(supaClient && vendedorDB && ag && ag.id){
+    supaClient.from("agendamentos").update({mensagem_env: true}).eq("id", ag.id);
+  }
+}
+
+function enviarWppAgendamento(){
+  if(!AG.clienteAtual) return;
+  var magTel = document.getElementById("mag-tel");
+  if(magTel && magTel.value.trim() && !AG.clienteAtual.tel){
+    var novoTel = magTel.value.trim();
+    AG.clienteAtual.tel = novoTel;
+    var idx = -1;
+    for(var i=0;i<VD.clientes.length;i++){if(VD.clientes[i].id===AG.clienteAtual.id){idx=i;break;}}
+    if(idx>=0) VD.clientes[idx].tel = novoTel;
+    salvar();
+    if(supaClient && vendedorDB){
+      supaClient.from("clientes").update({telefone: novoTel}).eq("id", AG.clienteAtual.id);
+    }
+  }
+  enviarWppCliente(AG.clienteAtual);
+  fecharModal("m-agenda");
+}
+
+function pedirTelefone(cliente){
+  var tel = prompt("Digite o telefone de " + cliente.nome + " (com DDD):");
+  if(!tel || !tel.trim()) return;
+  tel = tel.trim();
+  var idx = -1;
+  for(var i=0;i<VD.clientes.length;i++){if(VD.clientes[i].id===cliente.id){idx=i;break;}}
+  if(idx>=0){
+    VD.clientes[idx].tel = tel;
+    cliente.tel = tel;
+    salvar();
+    if(supaClient && vendedorDB){
+      supaClient.from("clientes").update({telefone: tel}).eq("id", cliente.id)
+        .then(function(){ toast("Telefone salvo!"); renderAgenda(); });
+    } else {
+      toast("Telefone salvo!"); renderAgenda();
+    }
+  }
+}
+
+function abrirWppTodos(){
+  recalc();
+  var chaves = VD.clientes.filter(function(c){ return c.chave; });
+  var pendentes = chaves.filter(function(c){
+    return c.tel && (!AG.agendamentos[c.id] || !AG.agendamentos[c.id].confirmado);
+  });
+  if(pendentes.length === 0){ toast("Nenhum pendente com telefone."); return; }
+  enviarWppCliente(pendentes[0]);
+  if(pendentes.length > 1) toast("Enviando para " + pendentes[0].nome + ". Continue os demais um a um.");
+}
+
+// ── FIM AGENDA ───────────────────────────────────────────────────────
+
+
+// ── CALENDÁRIO MENSAL E NAVEGAÇÃO ────────────────────────────────────
+var CAL = {
+  mes: new Date().getMonth() + 1,
+  ano: new Date().getFullYear(),
+  agendamentos: {},
+  diaSelecionado: null
+};
+
+var MESES_CAL = ["Janeiro","Fevereiro","Marco","Abril","Maio","Junho",
+                 "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+var DIAS_CAL = ["D","S","T","Q","Q","S","S"];
+
+function abrirCalMes(){
+  CAL.mes = new Date().getMonth() + 1;
+  CAL.ano = new Date().getFullYear();
+  CAL.diaSelecionado = null;
+  renderCalMes();
+  var el = document.getElementById("pg-cal-mes");
+  // Mostrar como overlay fixo sobre tudo
+  el.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;z-index:500;display:flex;flex-direction:column;overflow-y:auto;background:#f5f5f7";
+}
+
+function fecharCalMes(){
+  var el = document.getElementById("pg-cal-mes");
+  el.style.cssText = "display:none";
+}
+
+function mudarMesCal(delta){
+  CAL.mes += delta;
+  if(CAL.mes > 12){CAL.mes = 1; CAL.ano++;}
+  if(CAL.mes < 1){CAL.mes = 12; CAL.ano--;}
+  CAL.diaSelecionado = null;
+  document.getElementById("cm-detalhe").style.display = "none";
+  renderCalMes();
+}
+
+async function renderCalMes(){
+  recalc();
+  document.getElementById("cm-mes-label").textContent = MESES_CAL[CAL.mes-1] + " " + CAL.ano;
+  document.getElementById("cm-titulo").textContent = "Rota de " + MESES_CAL[CAL.mes-1];
+  document.getElementById("cm-sub").textContent = "Toque num dia para ver os clientes";
+
+  // Carregar agendamentos do banco para o mês
+  if(supaClient && vendedorDB){
+    var r = await supaClient.from("agendamentos")
+      .select("*").eq("mes", CAL.mes).eq("ano", CAL.ano);
+    if(r.data){
+      CAL.agendamentos = {};
+      r.data.forEach(function(a){ CAL.agendamentos[a.cliente_id] = a; });
+    }
+  }
+
+  // Gerar distribuição de clientes por dia do mês
+  var rotaDias = gerarDistribuicaoMes(CAL.mes, CAL.ano);
+
+  var diasNoMes = new Date(CAL.ano, CAL.mes, 0).getDate();
+  var primeiroDow = new Date(CAL.ano, CAL.mes-1, 1).getDay();
+  var hoje = new Date();
+  var isHojeNoMes = hoje.getMonth()+1 === CAL.mes && hoje.getFullYear() === CAL.ano;
+
+  var html = '';
+
+  // Header dias da semana
+  html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px">';
+  DIAS_CAL.forEach(function(d){
+    html += '<p style="font-size:10px;color:#888;text-align:center;margin:0;font-weight:500;padding:2px 0">'+d+'</p>';
+  });
+  html += '</div>';
+
+  // Grid dos dias
+  html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:8px">';
+
+  for(var i=0; i<primeiroDow; i++) html += '<div></div>';
+
+  for(var d=1; d<=diasNoMes; d++){
+    var dow = new Date(CAL.ano, CAL.mes-1, d).getDay();
+    var isUtil = dow >= 1 && dow <= 5;
+    var isHoje2 = isHojeNoMes && hoje.getDate() === d;
+    var isSel = CAL.diaSelecionado === d;
+    var clientes = rotaDias[d] || [];
+    var nChaves = clientes.filter(function(o){ return o.tipo === "chave"; }).length;
+    var nComuns = clientes.filter(function(o){ return o.tipo !== "chave"; }).length;
+    var nConf = clientes.filter(function(o){
+      return o.tipo === "chave" && CAL.agendamentos[o.c.id] && CAL.agendamentos[o.c.id].confirmado;
+    }).length;
+
+    var bg, border, cursor;
+    if(isHoje2)      { bg="#1a1a2e"; border="none"; cursor="pointer"; }
+    else if(isSel)   { bg="#e8eeff"; border="2px solid #1a1a2e"; cursor="pointer"; }
+    else if(nConf>0) { bg="#EAF3DE"; border="0.5px solid #C0DD97"; cursor="pointer"; }
+    else if(nChaves>0){ bg="#f0f4ff"; border="0.5px solid #c8d4f0"; cursor="pointer"; }
+    else if(nComuns>0){ bg="#f5f5f7"; border="0.5px solid #e0e0e0"; cursor="pointer"; }
+    else if(!isUtil)  { bg="transparent"; border="none"; cursor="default"; }
+    else              { bg="#fff"; border="0.5px solid #f0f0f0"; cursor="default"; }
+
+    html += '<div id="cdia-'+d+'" style="border-radius:8px;background:'+bg+';border:'+border+';padding:3px 2px;min-height:52px;cursor:'+cursor+';position:relative">';
+    html += '<p style="font-size:10px;font-weight:500;color:'+(isHoje2?"#fff":!isUtil?"#ccc":"#333")+';text-align:center;margin:0 0 1px">'+d+'</p>';
+    if(isUtil && clientes.length > 0){
+      if(nChaves > 0)
+        html += '<p style="font-size:9px;text-align:center;margin:0;color:'+(isHoje2?"rgba(255,255,255,.9)":"#1a1a2e")+';font-weight:600;line-height:1.3">&#11088;'+nChaves+'</p>';
+      if(nComuns > 0)
+        html += '<p style="font-size:9px;text-align:center;margin:0;color:'+(isHoje2?"rgba(255,255,255,.6)":"#888")+';line-height:1.3">+'+nComuns+'</p>';
+    }
+    html += '</div>';
+  }
+  html += '</div>';
+
+  document.getElementById("cm-grid").innerHTML = html;
+  document.getElementById("cm-detalhe").style.display = "none";
+
+  // Eventos dos dias
+  setTimeout(function(){
+    for(var d2=1; d2<=diasNoMes; d2++){
+      var dow2 = new Date(CAL.ano, CAL.mes-1, d2).getDay();
+      if(dow2 >= 1 && dow2 <= 5 && (rotaDias[d2]||[]).length > 0){
+        (function(dia, rotaDia){
+          var el = document.getElementById("cdia-"+dia);
+          if(el) el.addEventListener("click", function(){
+            // Remover highlight anterior
+            var prev = document.querySelector(".cal-dia-sel");
+            if(prev) {
+              prev.classList.remove("cal-dia-sel");
+              prev.style.border = prev.dataset.borderOrig || "0.5px solid #e0e0e0";
+            }
+            // Destacar dia selecionado
+            el.dataset.borderOrig = el.style.border;
+            el.style.border = "2px solid #1a1a2e";
+            el.classList.add("cal-dia-sel");
+            CAL.diaSelecionado = dia;
+            mostrarDetalheDiaCal(dia, rotaDia);
+          });
+        })(d2, rotaDias[d2]||[]);
+      }
+    }
+  }, 0);
+}
+
+function gerarDistribuicaoMes(mes, ano){
+  recalc();
+
+  // Dias úteis do mês
+  var diasNoMes = new Date(ano, mes, 0).getDate();
+  var diasUteis = [];
+  for(var d=1; d<=diasNoMes; d++){
+    var dow = new Date(ano, mes-1, d).getDay();
+    if(dow >= 1 && dow <= 5) diasUteis.push(d);
+  }
+
+  var rotaDias = {};
+  diasUteis.forEach(function(d){ rotaDias[d] = []; });
+
+  // Separar chaves e comuns
+  var chaves = VD.clientes.filter(function(c){ return c.chave; });
+  var comuns = VD.clientes.filter(function(c){ return !c.chave && c.naRota; });
+
+  // Ordenar chaves por urgência
+  chaves.sort(function(a,b){ return urgenciaCiclo(b) - urgenciaCiclo(a); });
+
+  // Distribuir chaves — verificar agendamentos confirmados primeiro
+  var chavesComData = [], chavesSemData = [];
+  chaves.forEach(function(c){
+    var ag = CAL.agendamentos[c.id];
+    if(ag && ag.dia_agendado && ag.confirmado){
+      var diaAg = new Date(ag.dia_agendado + "T12:00:00").getDate();
+      var mesAg = new Date(ag.dia_agendado + "T12:00:00").getMonth()+1;
+      var anoAg = new Date(ag.dia_agendado + "T12:00:00").getFullYear();
+      if(mesAg === mes && anoAg === ano && rotaDias[diaAg]){
+        rotaDias[diaAg].push({c:c, tipo:"chave", confirmado:true});
+        chavesComData.push(c.id);
+        return;
+      }
+    }
+    chavesSemData.push(c);
+  });
+
+  // Distribuir chaves sem data agendada — espaçados ao longo do mês
+  if(chavesSemData.length > 0){
+    var intervalo = Math.max(1, Math.floor(diasUteis.length / chavesSemData.length));
+    for(var i=0; i<chavesSemData.length; i++){
+      var diaIdx = Math.min(i * intervalo, diasUteis.length-1);
+      rotaDias[diasUteis[diaIdx]].push({c:chavesSemData[i], tipo:"chave", confirmado:false});
+    }
+  }
+
+  // Distribuir comuns nos dias — por proximidade se tiver GPS
+  var max = (VD.vendedor.maxRota||15) - chaves.length;
+  var comunsSlice = comuns.slice(0, Math.max(max, 5));
+
+  if(VD.locVendedor && comunsSlice.length > 0){
+    comunsSlice = rotaNearest(comunsSlice, VD.locVendedor.lat, VD.locVendedor.lng);
+  } else {
+    comunsSlice.sort(function(a,b){ return urgenciaCiclo(b) - urgenciaCiclo(a); });
+  }
+
+  var porDia = Math.ceil(comunsSlice.length / diasUteis.length);
+  for(var ci=0; ci<comunsSlice.length; ci++){
+    var diaIdx2 = Math.min(Math.floor(ci / Math.max(1, porDia)), diasUteis.length-1);
+    rotaDias[diasUteis[diaIdx2]].push({c:comunsSlice[ci], tipo:"comum", confirmado:false});
+  }
+
+  return rotaDias;
+}
+
+function mostrarDetalheDiaCal(dia, clientes){
+  var dd = document.getElementById("cm-detalhe");
+  if(!dd) return;
+
+  var dow = new Date(CAL.ano, CAL.mes-1, dia).getDay();
+  var nomesDia = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sabado"];
+
+  // Agrupar por cidade para mostrar o circuito
+  var cidades = [];
+  var cidadeMap = {};
+  clientes.forEach(function(obj){
+    var cidade = obj.c.cidade || "Outras";
+    if(!cidadeMap[cidade]){ cidadeMap[cidade] = []; cidades.push(cidade); }
+    cidadeMap[cidade].push(obj);
+  });
+
+  var html = '<div class="card">';
+  html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">';
+  html += '<div>';
+  html += '<p style="font-size:14px;font-weight:500;color:#1a1a2e;margin:0">'+nomesDia[dow]+', '+dia+'/'+CAL.mes+'</p>';
+  html += '<p style="font-size:11px;color:#888;margin:2px 0 0">'+clientes.length+' visita'+(clientes.length!==1?"s":"");
+
+  // Mostrar cidades únicas
+  if(cidades.length > 0){
+    html += ' · ' + cidades.slice(0,3).join(', ');
+    if(cidades.length > 3) html += ' +' + (cidades.length-3);
+  }
+  html += '</p></div>';
+  html += '<button onclick="navegarParaDia('+dia+')" style="padding:7px 12px;border-radius:8px;border:none;background:#1A73E8;color:#fff;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>Navegar</button>';
+  html += '</div>';
+
+  // Lista de clientes
+  clientes.forEach(function(obj, i){
+    var c = obj.c;
+    var ag = CAL.agendamentos[c.id];
+    var conf = ag && ag.confirmado;
+    var isChave = obj.tipo === "chave";
+    var periodo = ag ? ag.periodo : null;
+    var periodoIcon = periodo==="manha"?"🌅 Manhã":periodo==="tarde"?"🌆 Tarde":"";
+
+    html += '<div style="display:flex;gap:10px;align-items:center;padding:8px 0;border-top:0.5px solid #f0f0f0">';
+    html += '<div style="width:24px;height:24px;border-radius:6px;background:'+(isChave?"#1a1a2e":"#f0f0f0")+';display:flex;align-items:center;justify-content:center;flex-shrink:0">';
+    html += '<p style="font-size:10px;color:'+(isChave?"#fff":"#888")+';margin:0;font-weight:500">'+(i+1)+'</p></div>';
+    html += '<div style="flex:1;min-width:0">';
+    html += '<p style="font-size:12px;font-weight:'+(isChave?"600":"400")+';color:#111;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(isChave?"⭐ ":"")+c.nome+'</p>';
+    html += '<p style="font-size:10px;color:#888;margin:2px 0 0">'+c.cidade+(periodoIcon?" · "+periodoIcon:"")+'</p>';
+    html += '</div>';
+    if(conf) html += '<span class="chip chip-g" style="font-size:9px;padding:2px 6px">✓</span>';
+    html += '</div>';
+  });
+
+  html += '</div>';
+  dd.innerHTML = html;
+  dd.style.display = "block";
+  // scroll suave para o detalhe
+  setTimeout(function(){ dd.scrollIntoView({behavior:"smooth", block:"nearest"}); }, 50);
+}
+
+function navegarParaDia(dia){
+  // Abrir Google Maps com a rota do dia
+  var rotaDias = gerarDistribuicaoMes(CAL.mes, CAL.ano);
+  var clientes = rotaDias[dia] || [];
+  if(clientes.length === 0){ toast("Nenhum cliente nesse dia."); return; }
+
+  var url = "https://www.google.com/maps/dir/";
+  if(VD.locVendedor) url += VD.locVendedor.lat + "," + VD.locVendedor.lng + "/";
+
+  clientes.forEach(function(obj){
+    var c = obj.c;
+    if(c.lat && c.lng) url += c.lat + "," + c.lng + "/";
+    else url += encodeURIComponent(c.cidade + ",CE,Brasil") + "/";
+  });
+
+  window.open(url.replace(/\/$/, ""), "_blank");
+}
+
+// ── NAVEGAÇÃO WAZE/MAPS ──────────────────────────────────────────────
+function abrirNavegacao(){
+  // Montar rota da lista atual (diária ou semanal)
+  var rota = getRotaOrdenada();
+  if(!rota || rota.length === 0){ toast("Nenhuma parada na rota."); return; }
+
+  // Filtrar não visitados
+  var pendentes = rota.filter(function(o){
+    var v = VD.visitas["id_" + o.c.id];
+    return !v || !v.visitou;
+  });
+
+  if(pendentes.length === 0){ toast("Todas as visitas já foram realizadas!"); return; }
+
+  var url = "https://www.google.com/maps/dir/";
+  // Ponto de partida: posição atual ou primeira parada
+  if(VD.locVendedor){
+    url += VD.locVendedor.lat + "," + VD.locVendedor.lng + "/";
+  }
+
+  // Paradas na ordem da rota
+  pendentes.slice(0, 10).forEach(function(o){
+    var c = o.c;
+    if(c.lat && c.lng) url += c.lat + "," + c.lng + "/";
+    else url += encodeURIComponent(c.cidade + ",CE,Brasil") + "/";
+  });
+
+  window.open(url.replace(/\/$/, ""), "_blank");
+}
+
+// ── FIM CALENDÁRIO E NAVEGAÇÃO ───────────────────────────────────────
+
+
+function renderBtnRotaMensal(){
+  // Remover botão anterior se existir
+  var old = document.getElementById("btn-rota-mensal-wrap");
+  if(old) old.remove();
+  // Criar e inserir após a lista
+  var wrap = document.createElement("div");
+  wrap.id = "btn-rota-mensal-wrap";
+  wrap.style.cssText = "padding:0 0 16px";
+  wrap.innerHTML = '<button onclick="abrirCalMes()" style="width:100%;padding:11px;border-radius:12px;border:0.5px solid #1a1a2e;background:transparent;color:#1a1a2e;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Visualizar rota mensal</button>';
+  var lista = document.getElementById("rota-lista");
+  if(lista && lista.parentNode){
+    lista.parentNode.insertBefore(wrap, lista.nextSibling);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  // Registrar Service Worker para PWA
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('sw.js').then(function(){
+      console.log('SW registrado');
+    }).catch(function(){});
+  }
+
+  function carregarSDK(url, fallback) {
+    var sdk = document.createElement('script');
+    sdk.src = url;
+    sdk.onload = function(){ initSupabase(); };
+    sdk.onerror = function(){
+      if(fallback) {
+        // Tentar CDN alternativo
+        carregarSDK(fallback, null);
+      } else {
+        // Modo offline — sem banco
+        console.warn('SDK nao carregou. Modo offline.');
+        document.getElementById('login-overlay').style.display = 'none';
+        var pg = document.getElementById('pg-home');
+        if(pg) pg.className = 'screen ativo';
+        recalc(); renderHome();
+      }
+    };
+    document.head.appendChild(sdk);
+  }
+  carregarSDK(
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js',
+    'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js'
+  );
+});
+
+</script>
+</body>
+</html>
