@@ -3038,7 +3038,19 @@ function mudarMes(delta){
 }
 
 function abrirDetalheAgenda(dia){
-  var clientes = _agRotaDias[dia] || [];
+  var clientes = (_agRotaDias[dia] || []).slice();
+  // Adicionar clientes do plano mensal (GR.dias) que não estejam já na lista
+  if (GR && GR.dias && GR.mes === AG.mes - 1 && GR.ano === AG.ano) {
+    var dateKey = AG.ano + '-' + String(AG.mes).padStart(2,'0') + '-' + String(dia).padStart(2,'0');
+    var ids = GR.dias[dateKey] || [];
+    ids.forEach(function(id) {
+      var jaEsta = clientes.some(function(obj){ return obj.c && obj.c.id === id; });
+      if (jaEsta) return;
+      var c = (GR._chave||[]).filter(function(x){return x.id===id;})[0]
+           || VD.clientes.filter(function(x){return x.id===id;})[0];
+      if (c) clientes.unshift({ c: c, tipo: 'plano', confirmado: false });
+    });
+  }
   if(clientes.length === 0) return;
   // Highlight selected day
   var prev = document.querySelector("[data-ag-sel]");
@@ -3060,10 +3072,12 @@ function abrirDetalheAgenda(dia){
     var agConf=ag2&&ag2.confirmado;
     var isUrg=c.status==='urgente';
     var visHoje=VD.visitas['id_'+c.id]&&VD.visitas['id_'+c.id].visitou;
+    var tipoCli = clientes[i].tipo;
     var dot='background:#d0d0d0';
-    if(visHoje)     dot='background:#1A73E8';
-    else if(agConf) dot='background:#27500A';
-    else if(isUrg)  dot='background:#fff;border:2px solid #A32D2D;box-sizing:border-box';
+    if(visHoje)               dot='background:#1A73E8';
+    else if(agConf)           dot='background:#27500A';
+    else if(isUrg)            dot='background:#fff;border:2px solid #A32D2D;box-sizing:border-box';
+    else if(tipoCli==='plano') dot='background:#F5A623';
     html+='<div style="display:flex;gap:10px;align-items:center;padding:7px 0;border-top:0.5px solid #f0f0f0">';
     html+='<div style="width:8px;height:8px;border-radius:50%;'+dot+';flex-shrink:0"></div>';
     html+='<div style="flex:1;min-width:0"><p style="font-size:12px;font-weight:500;color:#111;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(c.chave?'⭐ ':'')+c.nome+'</p>';
@@ -3186,6 +3200,24 @@ async function renderAgenda(){
       }
     }
 
+    // 2b. Plano mensal do modal Gerar Rota (GR.dias) — clientes chave planejados
+    if (GR && GR.dias && GR.mes === AG.mes - 1 && GR.ano === AG.ano) {
+      Object.keys(GR.dias).forEach(function(dateKey) {
+        if (dateKey === '__pool__') return;
+        var parts = dateKey.split('-');
+        if (parseInt(parts[0]) !== AG.ano || parseInt(parts[1]) !== AG.mes) return;
+        var dNum = parseInt(parts[2]);
+        if (!rd[dNum]) return;
+        GR.dias[dateKey].forEach(function(id) {
+          var jaEsta = rd[dNum].some(function(obj){ return obj.c.id === id; });
+          if (jaEsta) return;
+          var c = (GR._chave || []).filter(function(x){ return x.id === id; })[0]
+               || VD.clientes.filter(function(x){ return x.id === id; })[0];
+          if (c) rd[dNum].push({ c: c, tipo: 'plano', confirmado: false });
+        });
+      });
+    }
+
     // 3. Outros dias do mês: distribuir clientes pelo ciclo (excluindo já alocados)
     var idsJaAlocados={};
     Object.keys(rd).forEach(function(d){rd[d].forEach(function(obj){idsJaAlocados[obj.c.id]=true;});});
@@ -3240,10 +3272,12 @@ async function renderAgenda(){
       var isUrg=c.status==='urgente';
       var visHoje=isHoje&&VD.visitas['id_'+c.id]&&VD.visitas['id_'+c.id].visitou;
       var ds;
-      if(visHoje)      ds='background:#1A73E8';
-      else if(agConf)  ds='background:#27500A';
-      else if(isUrg)   ds='background:#fff;border:2px solid #A32D2D;box-sizing:border-box';
-      else             ds='background:#d0d0d0';
+      var tipo3 = clientes[di].tipo;
+      if(visHoje)           ds='background:#1A73E8';
+      else if(agConf)       ds='background:#27500A';
+      else if(isUrg)        ds='background:#fff;border:2px solid #A32D2D;box-sizing:border-box';
+      else if(tipo3==='plano') ds='background:#F5A623'; // ⭐ plano mensal — dourado
+      else                  ds='background:#d0d0d0';
       dots+='<div style="width:7px;height:7px;border-radius:50%;flex-shrink:0;'+ds+'"></div>';
     }
     if(clientes.length>limDots) dots+='<span style="font-size:7px;color:#888;line-height:9px">+'+( clientes.length-limDots)+'</span>';
@@ -3259,6 +3293,34 @@ async function renderAgenda(){
   cal+='</div>';
   document.getElementById("ag-calendario").innerHTML=cal;
   document.getElementById("ag-detalhe-dia").style.display='none';
+
+  // ── Injetar pontos dourados do plano mensal (GR.dias) nas células ──────────
+  if (GR && GR.dias && GR.mes === AG.mes - 1 && GR.ano === AG.ano) {
+    Object.keys(GR.dias).forEach(function(dateKey) {
+      if (dateKey === '__pool__') return;
+      var parts = dateKey.split('-');
+      if (parseInt(parts[0]) !== AG.ano || parseInt(parts[1]) !== AG.mes) return;
+      var dNum = parseInt(parts[2]);
+      var cell = document.getElementById('agd-' + dNum);
+      if (!cell) return;
+      var dotsWrap = cell.querySelector('div');
+      if (!dotsWrap) return;
+      var ids = GR.dias[dateKey];
+      ids.forEach(function(id) {
+        // Verificar se o ponto já existe (evita duplicata com VD.rotaSemanal)
+        if (dotsWrap.querySelectorAll('[data-plano="'+id+'"]').length > 0) return;
+        var dot = document.createElement('div');
+        dot.dataset.plano = id;
+        dot.title = (function(){
+          var c = (GR._chave||[]).filter(function(x){return x.id===id;})[0]
+               || VD.clientes.filter(function(x){return x.id===id;})[0];
+          return c ? '⭐ '+c.nome : id;
+        })();
+        dot.style.cssText = 'width:7px;height:7px;border-radius:50%;background:#F5A623;flex-shrink:0;cursor:pointer';
+        dotsWrap.appendChild(dot);
+      });
+    });
+  }
 
   // ── CHAVES ─────────────────────────────────────────────────────────
   document.getElementById("ag-sub").textContent = MESES[AG.mes-1]+" "+AG.ano;
@@ -3628,13 +3690,14 @@ function abrirNavegacao(){
 
 
 // ── GERAR ROTA MODAL ─────────────────────────────────────────────────────
+var _grSalvo = JSON.parse(localStorage.getItem('v360_gr') || 'null');
 var GR = {
-  mes: new Date().getMonth(),
-  ano: new Date().getFullYear(),
-  view: 'sugestao',
-  dias: {},
+  mes:     _grSalvo ? _grSalvo.mes  : new Date().getMonth(),
+  ano:     _grSalvo ? _grSalvo.ano  : new Date().getFullYear(),
+  view:    'sugestao',
+  dias:    _grSalvo ? _grSalvo.dias : {},
   chipSel: null,
-  _chave: []   // cache dos clientes chave carregados do Supabase
+  _chave:  _grSalvo ? (_grSalvo._chave || []) : []
 };
 
 async function abrirModalGerarRota() {
@@ -3870,18 +3933,36 @@ async function gerarPlanoMensalGR() {
     return urgB - urgA;
   });
 
-  // 3. Atribuir cada cluster a uma semana e distribuir por dia (por ângulo)
+  // 3. Atribuir cada cluster a uma semana — circuito: mais longe=Segunda, NN de volta
   clusters.forEach(function(cluster, ci) {
     if (ci >= sems.length) return;
     var sem = sems[ci];
-    // Ordenar clientes do cluster por ângulo a partir da base
-    var clis = cluster.clientes.slice().sort(function(a, b) {
-      var angA = Math.atan2(parseFloat(a.lng)-lngI, parseFloat(a.lat)-latI);
-      var angB = Math.atan2(parseFloat(b.lng)-lngI, parseFloat(b.lat)-latI);
-      return angA - angB;
+
+    // Ordenar clientes do cluster por distância da base (mais longe primeiro)
+    var porDist = cluster.clientes.slice().sort(function(a, b) {
+      return distRoad(lngI, latI, parseFloat(b.lng), parseFloat(b.lat))
+           - distRoad(lngI, latI, parseFloat(a.lng), parseFloat(a.lat));
     });
-    // Distribuir nos dias da semana (1 por dia quando possível)
-    clis.forEach(function(c, i) {
+
+    // A partir do mais longe, encadear por NN (visitar os próximos no caminho de volta)
+    var inicio = porDist[0];
+    var restantes = porDist.slice(1);
+    var circuito = [inicio];
+    var curLat = parseFloat(inicio.lat), curLng = parseFloat(inicio.lng);
+
+    while (restantes.length) {
+      var minD = Infinity, minI = 0;
+      restantes.forEach(function(c, i) {
+        var d = distRoad(curLat, curLng, parseFloat(c.lat), parseFloat(c.lng));
+        if (d < minD) { minD = d; minI = i; }
+      });
+      var prox = restantes.splice(minI, 1)[0];
+      circuito.push(prox);
+      curLat = parseFloat(prox.lat); curLng = parseFloat(prox.lng);
+    }
+
+    // Distribuir nos dias da semana em ordem de circuito (1 por dia)
+    circuito.forEach(function(c, i) {
       var k = dkGR(sem[i % sem.length]);
       if (!GR.dias[k]) GR.dias[k] = [];
       if (GR.dias[k].indexOf(c.id) < 0) GR.dias[k].push(c.id);
@@ -3900,6 +3981,8 @@ async function gerarPlanoMensalGR() {
 
   var totalAg = contarAgendadosGR();
   atualizarStatsGR(chave, totalAg, chave.length, dias.length);
+  // Persistir plano no localStorage para a Agenda ler após reload
+  localStorage.setItem('v360_gr', JSON.stringify({ mes: GR.mes, ano: GR.ano, dias: GR.dias, _chave: GR._chave }));
   renderModalGR();
 }
 
@@ -4314,6 +4397,7 @@ async function aplicarCriteriosEGerar() {
   fecharModalGerarRota();
   renderRota();
   renderHome();
+  renderAgenda(); // atualiza calendário com o plano recém-gerado
   ir('rota');
   toast('Rota gerada com ' + diasRota.reduce(function(s,d){return s+d.ids.length;},0) + ' visitas!');
 }
@@ -4363,6 +4447,8 @@ function initSortableGR() {
           if (badge) badge.textContent = total + ' visitas';
         });
 
+        // Persistir após arrastar
+        localStorage.setItem('v360_gr', JSON.stringify({ mes: GR.mes, ano: GR.ano, dias: GR.dias, _chave: GR._chave }));
         // Atualizar stats (excluir pool)
         var ag = contarAgendadosGR();
         var elAg = document.getElementById('gr-stat-ag');
